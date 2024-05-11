@@ -1,0 +1,128 @@
+<?php
+
+class ControladorUmedida extends CI_Controller {
+
+    public function index() {
+        $this->load->view('base.php');
+    }
+
+    public function AgregarUmedida() {
+        if ($this->session->userdata('id_usuario')) {
+            $this->load->view('Umedida/CrearUmedida');
+        } else {
+            redirect('ControladorLogin'); // Redireccionar al controlador de login si no está autenticado
+        }
+    }
+
+    public function GuardarUmedida() {
+        if ($this->session->userdata('id_usuario')) {
+
+            $nombre_umedida = $this->input->post('CampoNombreUmedida');
+            $nombre_corto = $this->input->post('CampoNombreCorto');
+            $id_estado = $this->input->post('CampoEstado'); // Este debe ser el ID del estado seleccionado
+
+            $this->load->model('ModeloUmedida');
+            $this->ModeloUmedida->insertUmedida($nombre_umedida, $nombre_corto, $id_estado);
+
+            redirect('ControladorUmedida/MostrarUmedida');
+        } else {
+            redirect('ControladorLogin'); // Redireccionar al controlador de login si no está autenticado
+        }
+    }
+
+    public function MostrarUmedida() {
+        if ($this->session->userdata('id_usuario')) {
+
+            $this->load->model('ModeloUmedida');
+
+            $data['datos'] = $this->ModeloUmedida->selectUmedida();
+            $this->load->view('Umedida/MostrarUmedida', $data);
+        } else {
+            redirect('ControladorLogin'); // Redireccionar al controlador de login si no está autenticado
+        }
+    }
+
+    public function eliminarUmedida() {
+        if ($this->session->userdata('id_usuario')) {
+            $idDelete = $this->uri->segment(3);
+                     
+            $this->load->model('ModeloUmedida');
+            $existe = $this->ModeloUmedida->comprobar($idDelete);
+        
+            if (!isset($existe) || $existe <0){
+                $this->ModeloUmedida->deleteUmedida($idDelete);
+                redirect('ControladorUmedida/MostrarUmedida');
+            } else {
+                echo "<script>
+                    if (confirm('No puede realizar la eliminacion permanente de la unidad de medida ya que tiene productos asociados. ')) {
+                        window.location.href = '".base_url('ControladorUmedida/MostrarUmedida')."';
+                    } else {
+                        window.location.href = '".base_url('ControladorUmedida/MostrarUmedida')."';
+                    }
+                </script>";
+            }
+        } else {
+            redirect('ControladorLogin'); 
+        }
+    }
+
+    public function deshabilitarUmedida() {
+        if ($this->session->userdata('id_usuario')) {
+            $idDelete = $this->uri->segment(3);
+            $this->load->model('ModeloUmedida');
+            $this->ModeloUmedida->deshabilitarUmedida($idDelete);
+
+            redirect('ControladorUmedida/MostrarUmedida');
+        } else {
+            redirect('ControladorLogin');
+        }
+    }
+
+    public function cargarEditarUmedida() {
+        if ($this->session->userdata('id_usuario')) {
+
+            $idUpdate = $this->uri->segment(3);
+
+            $this->load->model('ModeloUmedida');
+            $resultado = $this->ModeloUmedida->selectUmedidaId($idUpdate);
+
+            $data["datoUmedida"] = $resultado;
+
+            $this->load->view('Umedida/ModificarUmedida', $data);
+        } else {
+            redirect('ControladorLogin'); // Redireccionar al controlador de login si no está autenticado
+        }
+    }
+
+    public function editarUmedida() {
+        if ($this->session->userdata('id_usuario')) {
+            
+        
+            $id_umedida = $this->input->post('CampoHidden');
+            $nombre_umedida = $this->input->post('CampoNombreUmedida');
+            $nombre_corto = $this->input->post('CampoNombreCorto');
+            $id_estado = $this->input->post('CampoEstado');
+
+            $this->load->model('ModeloUmedida');
+            $this->ModeloUmedida->updateUmedida($id_umedida, $nombre_umedida, $nombre_corto, $id_estado);
+
+            redirect('ControladorUmedida/MostrarUmedida');
+        
+        } else {
+            redirect('ControladorLogin'); // Redireccionar al controlador de login si no está autenticado
+        }
+
+    }
+
+    public function cargarEstado() {
+        if ($this->session->userdata('id_usuario')) {
+            
+            $this->load->model('ModeloUmedida');
+            $estado = $this->ModeloUmedida->obtenerEstado();
+            echo json_encode($estado);
+        
+        } else {
+            redirect('ControladorLogin');
+        }
+    }
+}
