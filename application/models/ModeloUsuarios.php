@@ -8,7 +8,7 @@ class ModeloUsuarios extends CI_Model {
             FROM usuario u
             INNER JOIN tipo_usuario tu ON u.id_tipo_usuario = tu.id_tipo_usuario
             INNER JOIN genero g ON u.id_genero = g.id_genero
-            WHERE u.id_estado = 1 and u.rut NOT LIKE '77.115.575-4' 
+            WHERE u.id_estado = 1 and u.rut NOT LIKE '77.115.675-4' 
         ");
 
         if ($querySelect->num_rows() > 0) {
@@ -91,6 +91,8 @@ class ModeloUsuarios extends CI_Model {
         $this->db->where('id_usuario', $id_usuario);
         $this->db->update('usuario', array('contrasena' => $hashed_password));
     }
+
+    
 }
 
 ?>

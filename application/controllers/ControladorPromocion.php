@@ -1,16 +1,18 @@
 <?php
 
-class ControladorPromocion extends CI_Controller {
+class ControladorPromocion extends CI_Controller
+{
 
-    #[\Override]
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         // Cargar librería de sesión
         $this->load->library('session');
         $this->load->model('ModeloPromocion');
     }
 
-    public function index() {
+    public function index()
+    {
         if ($this->session->userdata('id_usuario')) {
             $this->load->view('Promocion/MostrarPromocion.php');
         } else {
@@ -18,7 +20,8 @@ class ControladorPromocion extends CI_Controller {
         }
     }
 
-    public function MostrarPromocion() {
+    public function MostrarPromocion()
+    {
         if ($this->session->userdata('id_usuario')) {
             $this->load->model('ModeloPromocion');
             $data['promociones'] = $this->ModeloPromocion->obtenerPromociones();
@@ -28,10 +31,11 @@ class ControladorPromocion extends CI_Controller {
         }
     }
 
-// En el ControladorPromocion
+    // En el ControladorPromocion
 
 
-    public function AgregarPromocion() {
+    public function AgregarPromocion()
+    {
         if ($this->session->userdata('id_usuario')) {
 
             $this->load->model('ModeloProducto');
@@ -44,7 +48,8 @@ class ControladorPromocion extends CI_Controller {
         }
     }
 
-    public function GuardarPromocion() {
+    public function GuardarPromocion()
+    {
         if ($this->session->userdata('id_usuario')) {
             $this->load->model('ModeloPromocion');
 
@@ -79,7 +84,8 @@ class ControladorPromocion extends CI_Controller {
         }
     }
 
-    public function cargarEditarPromocion() {
+    public function cargarEditarPromocion()
+    {
         // Verificar si el usuario está autenticado
         if ($this->session->userdata('id_usuario')) {
             $idUpdate = $this->uri->segment(3);
@@ -98,7 +104,8 @@ class ControladorPromocion extends CI_Controller {
         }
     }
 
-    public function actualizar_promocion() {
+    public function actualizar_promocion()
+    {
         $id_promocion = $this->input->post('id_promocion');
         $datos_promocion = array(
             'fecha_inicio' => $this->input->post('fecha_inicio'),
@@ -120,7 +127,8 @@ class ControladorPromocion extends CI_Controller {
         }
     }
 
-    public function eliminarPromocion() {
+    public function eliminarPromocion()
+    {
 
         if ($this->session->userdata('id_usuario')) {
             $idDelete = $this->uri->segment(3);
@@ -129,6 +137,22 @@ class ControladorPromocion extends CI_Controller {
             $this->ModeloPromocion->deleteImagenPromocion($idDelete);
             $this->ModeloPromocion->deletePromocion($idDelete);
 
+            redirect('ControladorPromocion/MostrarPromocion');
+        } else {
+            redirect('ControladorLogin');
+        }
+    }
+
+
+
+    public function deleteTodo()
+    {
+        if ($this->session->userdata('id_usuario')) {
+            $this->load->model('ModeloPromocion');
+
+            // No hay productos asociados, se pueden eliminar todas las unidades de medida
+            $this->ModeloPromocion->deleteTodo();
+            // Éxito en la eliminación
             redirect('ControladorPromocion/MostrarPromocion');
         } else {
             redirect('ControladorLogin');

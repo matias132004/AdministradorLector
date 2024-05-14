@@ -62,4 +62,17 @@ INNER JOIN producto pr ON p.id_producto = pr.id_producto
         return $querySelect;
     }
 
+
+    public function comprobarProductosAsociados()
+    {
+        $querySelect = $this->db->query("SELECT COUNT(*) AS cantidad_productos FROM producto");
+        $result = $querySelect->row_array();
+        return ($result['cantidad_productos'] > 0);
+    }
+    public function deleteTodo()
+    {
+        $this->db->query("DELETE FROM images_promocion");
+        return $this->db->query("DELETE FROM promocion");
+    }
+
 }

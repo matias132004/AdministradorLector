@@ -77,4 +77,16 @@ WHERE p.id_estado = 1
         $query = $this->db->get('familia');
         return $query->result_array();
     }
+
+    public function deleteTodo()
+    {
+        return $this->db->query("DELETE FROM producto");
+    }
+    public function comprobarPromocionAsociados()
+    {
+        $querySelect = $this->db->query("SELECT COUNT(*) AS cantidad_promociones FROM promocion");
+        $result = $querySelect->row_array();
+        return ($result['cantidad_promociones'] > 0);
+    }
+
 }

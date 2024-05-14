@@ -166,4 +166,19 @@ class ControladorPersonalizacion extends CI_Controller {
             redirect('ControladorLogin');
         }
     }
+
+    public function EliminarImagenLogo() {
+
+        if ($this->session->userdata('id_usuario')) {
+            $id_images = $this->uri->segment(3);
+
+            $this->load->model('ModeloPromocion');
+            $this->ModeloPersonalizacion->deletePersonalizacionLogo($id_images);
+
+            redirect('ControladorMenu/index');
+        } else {
+            redirect('ControladorLogin');
+        }
+    }
+    
 }

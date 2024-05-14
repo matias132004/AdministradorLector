@@ -1,12 +1,15 @@
 <?php
 
-class ControladorUmedida extends CI_Controller {
+class ControladorUmedida extends CI_Controller
+{
 
-    public function index() {
+    public function index()
+    {
         $this->load->view('base.php');
     }
 
-    public function AgregarUmedida() {
+    public function AgregarUmedida()
+    {
         if ($this->session->userdata('id_usuario')) {
             $this->load->view('Umedida/CrearUmedida');
         } else {
@@ -14,12 +17,13 @@ class ControladorUmedida extends CI_Controller {
         }
     }
 
-    public function GuardarUmedida() {
+    public function GuardarUmedida()
+    {
         if ($this->session->userdata('id_usuario')) {
 
             $nombre_umedida = $this->input->post('CampoNombreUmedida');
             $nombre_corto = $this->input->post('CampoNombreCorto');
-            $id_estado = $this->input->post('CampoEstado'); // Este debe ser el ID del estado seleccionado
+            $id_estado = 1;
 
             $this->load->model('ModeloUmedida');
             $this->ModeloUmedida->insertUmedida($nombre_umedida, $nombre_corto, $id_estado);
@@ -30,7 +34,8 @@ class ControladorUmedida extends CI_Controller {
         }
     }
 
-    public function MostrarUmedida() {
+    public function MostrarUmedida()
+    {
         if ($this->session->userdata('id_usuario')) {
 
             $this->load->model('ModeloUmedida');
@@ -42,31 +47,34 @@ class ControladorUmedida extends CI_Controller {
         }
     }
 
-    public function eliminarUmedida() {
+    public function eliminarUmedida()
+    {
         if ($this->session->userdata('id_usuario')) {
             $idDelete = $this->uri->segment(3);
-                     
+    
             $this->load->model('ModeloUmedida');
             $existe = $this->ModeloUmedida->comprobar($idDelete);
-        
-            if (!isset($existe) || $existe <0){
+    
+            if (isset($existe) && $existe == 0) {
                 $this->ModeloUmedida->deleteUmedida($idDelete);
                 redirect('ControladorUmedida/MostrarUmedida');
             } else {
                 echo "<script>
-                    if (confirm('No puede realizar la eliminacion permanente de la unidad de medida ya que tiene productos asociados. ')) {
-                        window.location.href = '".base_url('ControladorUmedida/MostrarUmedida')."';
+                    if (confirm('No puede realizar la eliminación permanente de la unidad de medida ya que tiene productos asociados.')) {
+                        window.location.href = '" . base_url('ControladorUmedida/MostrarUmedida') . "';
                     } else {
-                        window.location.href = '".base_url('ControladorUmedida/MostrarUmedida')."';
+                        window.location.href = '" . base_url('ControladorUmedida/MostrarUmedida') . "';
                     }
                 </script>";
             }
         } else {
-            redirect('ControladorLogin'); 
+            redirect('ControladorLogin');
         }
     }
+    
 
-    public function deshabilitarUmedida() {
+    public function deshabilitarUmedida()
+    {
         if ($this->session->userdata('id_usuario')) {
             $idDelete = $this->uri->segment(3);
             $this->load->model('ModeloUmedida');
@@ -78,7 +86,8 @@ class ControladorUmedida extends CI_Controller {
         }
     }
 
-    public function cargarEditarUmedida() {
+    public function cargarEditarUmedida()
+    {
         if ($this->session->userdata('id_usuario')) {
 
             $idUpdate = $this->uri->segment(3);
@@ -94,10 +103,11 @@ class ControladorUmedida extends CI_Controller {
         }
     }
 
-    public function editarUmedida() {
+    public function editarUmedida()
+    {
         if ($this->session->userdata('id_usuario')) {
-            
-        
+
+
             $id_umedida = $this->input->post('CampoHidden');
             $nombre_umedida = $this->input->post('CampoNombreUmedida');
             $nombre_corto = $this->input->post('CampoNombreCorto');
@@ -107,22 +117,53 @@ class ControladorUmedida extends CI_Controller {
             $this->ModeloUmedida->updateUmedida($id_umedida, $nombre_umedida, $nombre_corto, $id_estado);
 
             redirect('ControladorUmedida/MostrarUmedida');
-        
         } else {
             redirect('ControladorLogin'); // Redireccionar al controlador de login si no está autenticado
         }
-
     }
 
-    public function cargarEstado() {
+    public function cargarEstado()
+    {
         if ($this->session->userdata('id_usuario')) {
-            
+
             $this->load->model('ModeloUmedida');
             $estado = $this->ModeloUmedida->obtenerEstado();
             echo json_encode($estado);
-        
         } else {
             redirect('ControladorLogin');
         }
     }
+
+    public function deleteTodo()
+    {
+        if ($this->session->userdata('id_usuario')) {
+            $this->load->model('ModeloUmedida');
+    
+            if (!$this->ModeloUmedida->comprobarProductosAsociados()) {
+                // No hay productos asociados, se pueden eliminar todas las unidades de medida
+                if ($this->ModeloUmedida->deleteTodo()) {
+                    // Éxito en la eliminación
+                    redirect('ControladorUmedida/MostrarUmedida');
+                } else {
+                    // Error en la eliminación
+                    echo "<script>
+                        alert('Ocurrió un error al eliminar todas las unidades de medida.');
+                        window.location.href = '" . base_url('ControladorUmedida/MostrarUmedida') . "';
+                    </script>";
+                }
+            } else {
+                // Hay productos asociados, mostrar mensaje de advertencia
+                echo "<script>
+                    if (confirm('No puede realizar la eliminación permanente de la unidad de medida ya que tiene productos asociados.')) {
+                        window.location.href = '" . base_url('ControladorUmedida/MostrarUmedida') . "';
+                    } else {
+                        window.location.href = '" . base_url('ControladorUmedida/MostrarUmedida') . "';
+                    }
+                </script>";
+            }
+        } else {
+            redirect('ControladorLogin');
+        }
+    }
+    
 }

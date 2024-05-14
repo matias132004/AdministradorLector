@@ -101,5 +101,13 @@ public function deletePersonalizacionFondo($id_images) {
     return $querySelect;
 
 }
+
+
+
+public function deletePersonalizacionLogo($id_images) {
+    $querySelect = $this->db->query("DELETE FROM images WHERE id = '$id_images' and tipo_img_id = 2");
+    return $querySelect;
+
+}
 }
 

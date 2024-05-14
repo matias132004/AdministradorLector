@@ -52,18 +52,26 @@ public function GuardarProducto() {
 }
 
 
-    public function MostrarProducto() {
-       
-        if ($this->session->userdata('id_usuario')) {
-            $this->load->model('ModeloProducto');
-            $resultado = $this->ModeloProducto->selectProducto();
-
-            $data['datos'] = $resultado;
-            $this->load->view('Productos/MostrarProducto', $data);
-        } else {
-            redirect('ControladorLogin');
-        }
+public function MostrarProducto() {
+    if ($this->session->userdata('id_usuario')) {
+        $this->load->view('Productos/MostrarProducto');
+    } else {
+        redirect('ControladorLogin');
     }
+}
+public function MostrarProductoAjax() {
+    if ($this->session->userdata('id_usuario')) {
+        $this->load->model('ModeloProducto');
+        $productos = $this->ModeloProducto->selectProducto();
+        
+        // Devolver los datos en formato JSON
+        echo json_encode($productos);
+    } else {
+        // Si no está autenticado, devolver un mensaje de error
+        echo json_encode(['error' => 'No autenticado']);
+    }
+}
+
 
     public function eliminarProducto() {
       
@@ -146,6 +154,36 @@ public function GuardarProducto() {
             echo json_encode($id_familia);
         } else {
             redirect('ControladorLogin'); // Redireccionar al controlador de login si no está autenticado
+        }
+    }
+    public function deleteTodo()
+    {
+        if ($this->session->userdata('id_usuario')) {
+            $this->load->model('ModeloProducto');
+    
+            if (!$this->ModeloProducto->comprobarPromocionAsociados()) {
+                  if ($this->ModeloProducto->deleteTodo()) {
+                    // Éxito en la eliminación
+                    redirect('ControladorProducto/MostrarProducto');
+                } else {
+                    // Error en la eliminación
+                    echo "<script>
+                        alert('Ocurrió un error al eliminar todos los productos.');
+                        window.location.href = '" . base_url('ControladorProducto/MostrarProducto') . "';
+                    </script>";
+                }
+            } else {
+                // Hay productos asociados, mostrar mensaje de advertencia
+                echo "<script>
+                    if (confirm('No puede realizar la eliminación permanente de los Productos ya que tiene promociones asociados.')) {
+                        window.location.href = '" . base_url('ControladorProducto/MostrarProducto') . "';
+                    } else {
+                        window.location.href = '" . base_url('ControladorProducto/MostrarProducto') . "';
+                    }
+                </script>";
+            }
+        } else {
+            redirect('ControladorLogin');
         }
     }
 }

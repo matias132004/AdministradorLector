@@ -18,7 +18,7 @@ class ControladorFamilia extends CI_Controller {
         if ($this->session->userdata('id_usuario')) {
 
             $nombre_familia = $this->input->post('CampoNombreFamilia');
-            $id_estado = $this->input->post('CampoEstado'); // Este debe ser el ID del estado seleccionado
+            $id_estado = 1; // Este debe ser el ID del estado seleccionado
 
             $this->load->model('ModeloFamilia');
             $this->ModeloFamilia->insertFamilia($nombre_familia, $id_estado);
@@ -41,29 +41,30 @@ class ControladorFamilia extends CI_Controller {
         }
     }
 
-public function eliminarFamilia() {
-    if ($this->session->userdata('id_usuario')) {
-        $idDelete = $this->uri->segment(3);
-                     
-        $this->load->model('ModeloFamilia');
-        $existe = $this->ModeloFamilia->comprobar($idDelete);
-        
-        if (!isset($existe) || $existe <0){
-            $this->ModeloFamilia->deleteFamilia($idDelete);
-            redirect('ControladorFamilia/MostrarFamilia');
+    public function eliminarFamilia()
+    {
+        if ($this->session->userdata('id_usuario')) {
+            $idDelete = $this->uri->segment(3);
+                         
+            $this->load->model('ModeloFamilia');
+            $existe = $this->ModeloFamilia->comprobar($idDelete);
+            
+            if (isset($existe) && $existe == 0) {
+                $this->ModeloFamilia->deleteFamilia($idDelete);
+                redirect('ControladorFamilia/MostrarFamilia');
+            } else if (isset($existe) && $existe > 0) {
+                echo "<script>
+                    if (confirm('No puede realizar la eliminación permanente de la familia ya que tiene productos asociados.')) {
+                        window.location.href = '".base_url('ControladorFamilia/MostrarFamilia')."';
+                    } else {
+                        window.location.href = '".base_url('ControladorFamilia/MostrarFamilia')."';
+                    }
+                </script>";
+            }
         } else {
-            echo "<script>
-                if (confirm('No puede realizar la eliminacion permanente de la familia ya que tiene productos asociados. ')) {
-                    window.location.href = '".base_url('ControladorFamilia/MostrarFamilia')."';
-                } else {
-                    window.location.href = '".base_url('ControladorFamilia/MostrarFamilia')."';
-                }
-            </script>";
+            redirect('ControladorLogin'); 
         }
-    } else {
-        redirect('ControladorLogin'); 
     }
-}
 
     public function deshabilitarFamilia() {
         if ($this->session->userdata('id_usuario')) {
@@ -120,6 +121,39 @@ public function eliminarFamilia() {
         echo json_encode($estado);
         
          } else {
+            redirect('ControladorLogin');
+        }
+    }
+
+
+    public function deleteTodo()
+    {
+        if ($this->session->userdata('id_usuario')) {
+            $this->load->model('ModeloFamilia');
+    
+            if (!$this->ModeloFamilia->comprobarProductosAsociados()) {
+               
+                if ($this->ModeloFamilia->deleteTodo()) {
+                    
+                    redirect('ControladorFamilia/MostrarFamilia');
+                } else {
+                   
+                    echo "<script>
+                        alert('Ocurrió un error al eliminar todas las Familia.');
+                        window.location.href = '" . base_url('ControladorFamilia/MostrarFamilia') . "';
+                    </script>";
+                }
+            } else {
+                
+                echo "<script>
+                    if (confirm('No puede realizar la eliminación permanente de las Familias ya que tienen productos asociados.')) {
+                        window.location.href = '" . base_url('ControladorFamilia/MostrarFamilia') . "';
+                    } else {
+                        window.location.href = '" . base_url('ControladorFamilia/MostrarFamilia') . "';
+                    }
+                </script>";
+            }
+        } else {
             redirect('ControladorLogin');
         }
     }

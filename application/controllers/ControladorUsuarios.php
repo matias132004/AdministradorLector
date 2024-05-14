@@ -49,11 +49,61 @@ class ControladorUsuarios extends CI_Controller {
             redirect('ControladorLogin'); // Redireccionar al controlador de login si no está autenticado
         }
     }
+    function validarRut($rut) {
+        // Eliminar caracteres no permitidos
+        $rut = preg_replace('/[^0-9kK]/', '', $rut);
+    
+        // Separar cuerpo y dígito verificador
+        $cuerpo = substr($rut, 0, -1);
+        $verificador = strtoupper(substr($rut, -1));
+    
+        $suma = 0;
+        $multiplo = 2;
+    
+        // Calcular suma ponderada del cuerpo del RUT
+        for ($i = strlen($cuerpo) - 1; $i >= 0; $i--) {
+            $suma += $cuerpo[$i] * $multiplo;
+            $multiplo = ($multiplo == 7) ? 2 : $multiplo + 1;
+        }
+    
+        // Calcular dígito verificador esperado
+        $esperado = 11 - ($suma % 11);
+        $esperado = ($esperado == 10) ? 'K' : $esperado;
+        $esperado = ($esperado == 11) ? '0' : $esperado;
+    
+        // Validar dígito verificador
+        return ($esperado == $verificador);
+    }
 
     public function registroUsuario() {
         // Verificar si el usuario está autenticado
         if ($this->session->userdata('id_usuario')) {
             $this->load->model('ModeloUsuarios');
+            function validarRut($rut) {
+                // Eliminar caracteres no permitidos
+                $rut = preg_replace('/[^0-9kK]/', '', $rut);
+            
+                // Separar cuerpo y dígito verificador
+                $cuerpo = substr($rut, 0, -1);
+                $verificador = strtoupper(substr($rut, -1));
+            
+                $suma = 0;
+                $multiplo = 2;
+            
+                // Calcular suma ponderada del cuerpo del RUT
+                for ($i = strlen($cuerpo) - 1; $i >= 0; $i--) {
+                    $suma += $cuerpo[$i] * $multiplo;
+                    $multiplo = ($multiplo == 7) ? 2 : $multiplo + 1;
+                }
+            
+                // Calcular dígito verificador esperado
+                $esperado = 11 - ($suma % 11);
+                $esperado = ($esperado == 10) ? 'K' : $esperado;
+                $esperado = ($esperado == 11) ? '0' : $esperado;
+            
+                // Validar dígito verificador
+                return ($esperado == $verificador);
+            }
 
             $rut = $this->input->post('Rut');
             $nombre = $this->input->post('nombre');
@@ -67,7 +117,7 @@ class ControladorUsuarios extends CI_Controller {
             $id_tipo_usuario = $this->input->post('tipo_usuario');
             $id_genero = $this->input->post('genero');
             $estado = 1;
-
+          if (validarRut($rut)) {
             $comprobar = $this->ModeloUsuarios->selectUsuarioRut($rut);
             if ($comprobar == null) {
 
@@ -79,6 +129,10 @@ class ControladorUsuarios extends CI_Controller {
                 redirect('ControladorUsuarios/mostrarUsuario');
             }
         } else {
+            // El RUT no es válido, mostrar mensaje de error
+            $this->session->set_flashdata('alerta', 'El rut ingresado no es válido');
+            redirect('ControladorUsuarios/crearUsuario');
+        }} else {
             redirect('ControladorLogin');
         }
     }

@@ -22,6 +22,17 @@ class ModeloUmedida extends CI_Model {
     public function deleteUmedida($id_umedida) {
         $querySelect = $this->db->query("DELETE FROM umedida WHERE id_umedida='$id_umedida'");
     }
+    public function comprobarProductosAsociados()
+    {
+        $querySelect = $this->db->query("SELECT COUNT(*) AS cantidad_productos FROM producto");
+        $result = $querySelect->row_array();
+        return ($result['cantidad_productos'] > 0);
+    }
+    
+    public function deleteTodo()
+    {
+        return $this->db->query("DELETE FROM umedida");
+    }
 
     public function deshabilitarUmedida($id_umedida) {
         $queryUpdate = $this->db->query("UPDATE umedida SET id_estado = 2 WHERE id_umedida = '$id_umedida'");

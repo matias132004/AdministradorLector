@@ -3,7 +3,7 @@
 
 <div class="container mt-4">
     <div class="row justify-content-center">
-        <div class="col-lg-6"> <!-- Dividir en dos columnas -->
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header bg-dark text-white">
                     Cambiar Contraseña

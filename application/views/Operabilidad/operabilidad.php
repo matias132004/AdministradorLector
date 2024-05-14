@@ -49,7 +49,7 @@
 
     document.getElementById('btnSincronizar').addEventListener('click', function () {
         if (confirm('¿Estás seguro de sincronizar los datos con el PDV y perder algunos cambios realizados en el sistema?')) {
-            window.location.href = "http://localhost/ApiLector/obtenerFamilias.php";
+            window.location.href = "http://192.168.1.190/ApiLector/obtenerFamilias.php";
         }
     });
 
