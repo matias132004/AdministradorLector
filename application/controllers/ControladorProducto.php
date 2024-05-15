@@ -59,18 +59,35 @@ public function MostrarProducto() {
         redirect('ControladorLogin');
     }
 }
-public function MostrarProductoAjax() {
+
+
+public function MostrarProductoAjax()
+{
     if ($this->session->userdata('id_usuario')) {
         $this->load->model('ModeloProducto');
-        $productos = $this->ModeloProducto->selectProducto();
-        
-        // Devolver los datos en formato JSON
-        echo json_encode($productos);
+
+        $draw = intval($this->input->get("draw"));
+        $start = intval($this->input->get("start"));
+        $length = intval($this->input->get("length"));
+        $search = $this->input->get("search")["value"]; // Obtener el término de búsqueda
+
+        $productos = $this->ModeloProducto->selectProducto($length, $start, $search); // Pasar el término de búsqueda al modelo
+        $totalProductos = $this->ModeloProducto->countProductos();
+
+        $data = array(
+            "draw" => $draw,
+            "recordsTotal" => $totalProductos,
+            "recordsFiltered" => $totalProductos,
+            "data" => $productos
+        );
+
+        echo json_encode($data);
     } else {
-        // Si no está autenticado, devolver un mensaje de error
         echo json_encode(['error' => 'No autenticado']);
     }
 }
+
+
 
 
     public function eliminarProducto() {
@@ -160,6 +177,17 @@ public function MostrarProductoAjax() {
     {
         if ($this->session->userdata('id_usuario')) {
             $this->load->model('ModeloProducto');
+
+            $this->load->model('ModeloUsuarios');
+
+
+            $contrasena = $this->input->post('contrasena');
+            $usuario_actual = $this->session->userdata('id_usuario');
+            $usuario = $this->ModeloUsuarios->selectUsuarioId($usuario_actual);
+            $contrasena_bd = $usuario->row()->contrasena;
+    
+            // Verificar si la contraseña proporcionada coincide con la contraseña del usuario actual
+            if (password_verify($contrasena, $contrasena_bd)) {
     
             if (!$this->ModeloProducto->comprobarPromocionAsociados()) {
                   if ($this->ModeloProducto->deleteTodo()) {
@@ -182,7 +210,15 @@ public function MostrarProductoAjax() {
                     }
                 </script>";
             }
+        
         } else {
+            // Contraseña incorrecta
+            echo "<script>
+            alert('La contraseña es incorrecta.');
+            window.location.href = '" . base_url('ControladorPromocion/MostrarPromocion') . "';
+        </script>";
+        }
+    }else {
             redirect('ControladorLogin');
         }
     }

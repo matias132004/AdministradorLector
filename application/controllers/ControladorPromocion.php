@@ -31,7 +31,7 @@ class ControladorPromocion extends CI_Controller
         }
     }
 
-    // En el ControladorPromocion
+
 
 
     public function AgregarPromocion()
@@ -127,9 +127,7 @@ class ControladorPromocion extends CI_Controller
         }
     }
 
-    public function eliminarPromocion()
-    {
-
+    public function eliminarPromocion() {
         if ($this->session->userdata('id_usuario')) {
             $idDelete = $this->uri->segment(3);
 
@@ -145,16 +143,30 @@ class ControladorPromocion extends CI_Controller
 
 
 
-    public function deleteTodo()
-    {
+    public function deleteTodo(){
         if ($this->session->userdata('id_usuario')) {
             $this->load->model('ModeloPromocion');
+            $this->load->model('ModeloUsuarios');
 
-            // No hay productos asociados, se pueden eliminar todas las unidades de medida
-            $this->ModeloPromocion->deleteTodo();
-            // Éxito en la eliminación
+
+            $contrasena = $this->input->post('contrasena');
+            $usuario_actual = $this->session->userdata('id_usuario');
+            $usuario = $this->ModeloUsuarios->selectUsuarioId($usuario_actual);
+            $contrasena_bd = $usuario->row()->contrasena;
+    
+            // Verificar si la contraseña proporcionada coincide con la contraseña del usuario actual
+            if (password_verify($contrasena, $contrasena_bd)) {
+                $this->ModeloPromocion->deleteTodo();
             redirect('ControladorPromocion/MostrarPromocion');
+            
         } else {
+            // Contraseña incorrecta
+            echo "<script>
+            alert('La contraseña es incorrecta.');
+            window.location.href = '" . base_url('ControladorPromocion/MostrarPromocion') . "';
+        </script>";
+        }
+    } else {
             redirect('ControladorLogin');
         }
     }

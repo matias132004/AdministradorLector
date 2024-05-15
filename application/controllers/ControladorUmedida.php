@@ -138,32 +138,47 @@ class ControladorUmedida extends CI_Controller
     {
         if ($this->session->userdata('id_usuario')) {
             $this->load->model('ModeloUmedida');
+            $this->load->model('ModeloUsuarios');
+            $contrasena = $this->input->post('contrasena');
+            $usuario_actual = $this->session->userdata('id_usuario');
+            $usuario = $this->ModeloUsuarios->selectUsuarioId($usuario_actual);
+            $contrasena_bd = $usuario->row()->contrasena;
     
-            if (!$this->ModeloUmedida->comprobarProductosAsociados()) {
-                // No hay productos asociados, se pueden eliminar todas las unidades de medida
-                if ($this->ModeloUmedida->deleteTodo()) {
-                    // Éxito en la eliminación
-                    redirect('ControladorUmedida/MostrarUmedida');
+            // Verificar si la contraseña proporcionada coincide con la contraseña del usuario actual
+            if (password_verify($contrasena, $contrasena_bd)) {
+                // Verificar si hay productos asociados a las unidades de medida
+                if (!$this->ModeloUmedida->comprobarProductosAsociados()) {
+                    // Eliminar todas las unidades de medida
+                    if ($this->ModeloUmedida->deleteTodo()) {
+                        redirect('ControladorUmedida/MostrarUmedida');
+                    } else {
+                        // Error en la eliminación
+                        echo "<script>
+                            alert('Ocurrió un error al eliminar todas las unidades de medida.');
+                            window.location.href = '" . base_url('ControladorUmedida/MostrarUmedida') . "';
+                        </script>";
+                    }
                 } else {
-                    // Error en la eliminación
+                    // Hay productos asociados, mostrar mensaje de advertencia
                     echo "<script>
-                        alert('Ocurrió un error al eliminar todas las unidades de medida.');
-                        window.location.href = '" . base_url('ControladorUmedida/MostrarUmedida') . "';
+                        if (confirm('No puede realizar la eliminación permanente de la unidad de medida ya que tiene productos asociados.')) {
+                            window.location.href = '" . base_url('ControladorUmedida/MostrarUmedida') . "';
+                        } else {
+                            window.location.href = '" . base_url('ControladorUmedida/MostrarUmedida') . "';
+                        }
                     </script>";
                 }
             } else {
-                // Hay productos asociados, mostrar mensaje de advertencia
+                // Contraseña incorrecta
                 echo "<script>
-                    if (confirm('No puede realizar la eliminación permanente de la unidad de medida ya que tiene productos asociados.')) {
-                        window.location.href = '" . base_url('ControladorUmedida/MostrarUmedida') . "';
-                    } else {
-                        window.location.href = '" . base_url('ControladorUmedida/MostrarUmedida') . "';
-                    }
-                </script>";
+                alert('La contraseña es incorrecta.');
+                window.location.href = '" . base_url('ControladorUmedida/MostrarUmedida') . "';
+            </script>";
             }
         } else {
             redirect('ControladorLogin');
         }
     }
+    
     
 }

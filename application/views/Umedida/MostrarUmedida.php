@@ -16,13 +16,13 @@
                                 <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M8.5 7v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 1 0" />
                             </svg>
                         </a>
-                        <a href="<?php echo base_url() ?>ControladorUmedida/deleteTodo" class="btn btn-outline-danger">
+                        <button id="btnEliminar" class="btn btn-outline-danger">
                             Eliminar Todo
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
                             </svg>
-                        </a>
+                            </button> 
                     </div>
 
                     <?php if (!empty($datos)) : ?>
@@ -89,10 +89,52 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar eliminación</h5>
+                <button type="button" class="close" id="btnCancelar2" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="eliminarConfirmarForm" action="<?php echo base_url() ?>ControladorUmedida/deleteTodo" method="post">
+                <div class="modal-body">
+                    <p>Por favor, ingresa tu contraseña para confirmar la eliminación:</p>
+                    <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contraseña">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+            </form>
+            <button type="button" id="btnCancelar" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+
+        </div>
+        </form>
+    </div>
+</div>
+</div>
+
+
 <?php require_once "application/views/footer/Footer.php"; ?>
 
 <script>
     $(document).ready(function() {
+        $("#btnEliminar").click(function() {
+        $('#confirmDeleteModal').modal('show');
+    });
+
+
+        $('#btnCancelar').on('click', function() {
+            $('#confirmDeleteModal').modal('hide');
+        });
+
+        $('#btnCancelar2').on('click', function() {
+            $('#confirmDeleteModal').modal('hide');
+        });
+
+
+
 
         $(".btn-eliminar").click(function() {
             // Obtener el ID del elemento a eliminar

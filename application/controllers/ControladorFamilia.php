@@ -130,7 +130,14 @@ class ControladorFamilia extends CI_Controller {
     {
         if ($this->session->userdata('id_usuario')) {
             $this->load->model('ModeloFamilia');
-    
+            $this->load->model('ModeloUsuarios');
+
+            $contrasena = $this->input->post('contrasena');
+            $usuario_actual = $this->session->userdata('id_usuario');
+            $usuario = $this->ModeloUsuarios->selectUsuarioId($usuario_actual);
+            $contrasena_bd = $usuario->row()->contrasena;
+
+       if (password_verify($contrasena, $contrasena_bd)) {
             if (!$this->ModeloFamilia->comprobarProductosAsociados()) {
                
                 if ($this->ModeloFamilia->deleteTodo()) {
@@ -153,8 +160,17 @@ class ControladorFamilia extends CI_Controller {
                     }
                 </script>";
             }
+        }else {
+                // Contraseña incorrecta
+                echo "<script>
+                alert('La contraseña es incorrecta.');
+                window.location.href = '" . base_url('ControladorFamilia/MostrarFamilia') . "';
+            </script>";
+            }
         } else {
             redirect('ControladorLogin');
         }
     }
+
+    
 }
