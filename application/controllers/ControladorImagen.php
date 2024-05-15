@@ -2,7 +2,7 @@
 
 class ControladorImagen extends CI_Controller {
 
-    #[\Override]
+  
     public function __construct() {
         parent::__construct();
         $this->load->helper(array('form', 'url'));

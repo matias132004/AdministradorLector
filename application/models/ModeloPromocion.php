@@ -74,5 +74,16 @@ INNER JOIN producto pr ON p.id_producto = pr.id_producto
         $this->db->query("DELETE FROM images_promocion");
         return $this->db->query("DELETE FROM promocion");
     }
-
+    public function selectProducto()
+    {
+        $querySelect = $this->db->query("SELECT p.*, u.nombre_umedida, e.nombre_estado, f.nombre_familia
+            FROM producto p
+            INNER JOIN familia f ON p.id_familia = f.id_familia
+            INNER JOIN umedida u ON p.id_umedida = u.id_umedida
+            INNER JOIN estado e ON p.id_estado = e.id_estado
+            WHERE p.id_estado = 1
+            ORDER BY id_producto");
+    
+        return $querySelect->result_array();
+    }
 }

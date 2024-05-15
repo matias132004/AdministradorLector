@@ -38,9 +38,9 @@ class ControladorPromocion extends CI_Controller
     {
         if ($this->session->userdata('id_usuario')) {
 
-            $this->load->model('ModeloProducto');
+            $this->load->model('ModeloPromocion');
 
-            $resultado = $this->ModeloProducto->selectProducto();
+            $resultado = $this->ModeloPromocion->selectProducto();
             $data['datos'] = $resultado;
             $this->load->view('Promociones/AgregarPromocion', $data);
         } else {
