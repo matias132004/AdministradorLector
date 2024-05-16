@@ -9,8 +9,12 @@ class ModeloPromocion extends CI_Model {
     }
 
     public function guardarPromocion($id_producto, $fecha_inicio, $fecha_termino, $lunes, $martes, $miercoles, $jueves, $viernes, $sabado, $domingo, $descripcion) {
-
+        $ultimo_id_result = $this->db->query("SELECT COALESCE(MAX(id_promocion), 0) + 1 AS max_id FROM promocion");
+        $row = $ultimo_id_result->row();
+        $max_id = $row->max_id; 
+        
         $data = array(
+            'od_promocion' => $max_id,
             'id_producto' => $id_producto,
             'fecha_inicio' => $fecha_inicio,
             'fecha_fin' => $fecha_termino,

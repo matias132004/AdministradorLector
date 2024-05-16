@@ -22,13 +22,13 @@
             <!-- Left navbar links -->
 
             <ul class="navbar-nav ml-auto">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                <a class="nav-link" data-widget="pushmenu" href="" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link"></a>
+                    <a href="" class="nav-link"></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link"></a>
+                    <a href="" class="nav-link"></a>
                 </li>
                 <!-- Navbar Search -->
                 <li class="nav-item">
@@ -82,7 +82,7 @@
                                 <a href="<?php echo base_url() ?>/ControladorMenu/Index" class="nav-link">
                                     <i class="nav-icon fas fa-chart-pie"></i>
                                     <p>
-                                        Sincronizar datos del PDV
+                                        Compatibilidad
                                     </p>
                                 </a>
                             </li>
@@ -133,6 +133,12 @@
                                         <a href="<?php echo base_url() ?>ControladorPromocion/AgregarPromocion" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Crear Promocion</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo base_url() ?>ControladorConfiguracionPromocion/CargarPromocionConfiguracion" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Configurar Promocion</p>
                                         </a>
                                     </li>
                                 </ul>

@@ -170,4 +170,6 @@ class ControladorPromocion extends CI_Controller
             redirect('ControladorLogin');
         }
     }
+
+ 
 }

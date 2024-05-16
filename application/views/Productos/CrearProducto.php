@@ -39,10 +39,18 @@
                                 <input type="text" name="CampoPrecio" id="idPrecio" class="form-control" required autofocus>
                             </div>
                             <div class="col-6">
+                                <label for="idPrecioAntiguo" class="form-label">Precio Antiguo</label>
+                                <input type="text" name="CampoPrecioOld" id="idPrecioAntiguo" value="0" class="form-control" required autofocus>
+                            </div>
+                            <div class="col-6">
                                 <label for="idEstado" class="form-label">Estado</label>
                                 <select name="CampoEstado" id="idEstado" class="form-control" required>
                                     <option value="">Seleccione el estado del producto</option>
                                 </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="idDescripcionProducto" class="form-label">Descripcion del Producto</label>
+                                <input type="text" name="CampoDescripcionProducto" id="idDescripcionProducto" class="form-control" required autofocus>
                             </div>
                         </div>
                         <br>

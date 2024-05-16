@@ -9,14 +9,13 @@ class ModeloFamilia extends CI_Model {
 
 
     public function insertFamilia($nombre_familia, $id_estado) {
-       
-        $query = $this->db->query("SELECT MAX(id_familia) AS max_id FROM familia");
+
+        $query = $this->db->query("SELECT COALESCE(MAX(id_familia), 0) + 1 AS max_id FROM familia");
         $row = $query->row();
         $ultimo_id = $row->max_id;
     
-        $nuevo_id = $ultimo_id + 1;
 
-        $this->db->query("INSERT INTO familia (id_familia, nombre_familia, id_estado) VALUES ('$nuevo_id', UPPER('$nombre_familia'), '$id_estado')");
+        $this->db->query("INSERT INTO familia (id_familia, nombre_familia, id_estado) VALUES ('$ultimo_id', UPPER('$nombre_familia'), '$id_estado')");
     }
     public function comprobar($idFamilia){
     $querySelect = $this->db->query("SELECT COUNT(*) AS cantidad_productos

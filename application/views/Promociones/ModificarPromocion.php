@@ -23,7 +23,7 @@
                         </div>        
                         <div class="form-group">
                             <label for="descripcion">Descripción:</label>
-                            <textarea id="descripcion" name="descripcion" rows="5" class="form-control" required><?php echo $fila['descripcion']; ?></textarea>
+                            <textarea id="descripcion" name="descripcion" rows="5" class="form-control" ><?php echo $fila['descripcion']; ?></textarea>
                         </div>
                         <div class="mt-3">
                             <h5>Días donde aplica la promoción</h5>

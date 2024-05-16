@@ -16,7 +16,10 @@ class ModeloUmedida extends CI_Model {
     }
 
     public function insertUmedida($nombre_umedida, $nombre_corto, $id_estado) {
-        $this->db->query("INSERT INTO umedida(nombre_umedida, nombre_corto, id_estado) VALUES (UPPER('$nombre_umedida'),UPPER('$nombre_corto'), '$id_estado')");
+        $ultimo_id_result = $this->db->query("SELECT COALESCE(MAX(id_umedida), 0) + 1 AS max_id FROM umedida");
+        $row = $ultimo_id_result->row();
+        $max_id = $row->max_id;
+        $this->db->query("INSERT INTO umedida(id_umedida,nombre_umedida, nombre_corto, id_estado) VALUES ($max_id,UPPER('$nombre_umedida'),UPPER('$nombre_corto'), '$id_estado')");
     }
 
     public function deleteUmedida($id_umedida) {

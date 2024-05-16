@@ -10,7 +10,7 @@ class ModeloProducto extends CI_Model
             $search = strtoupper($search); // Convertir el término de búsqueda a mayúsculas
             $searchQuery = "AND (UPPER(p.nombre_producto) LIKE '%$search%' OR UPPER(f.nombre_familia) LIKE '%$search%' OR UPPER(p.cbarra) LIKE '%$search%' OR UPPER(u.nombre_umedida) LIKE '%$search%' OR UPPER(e.nombre_estado) LIKE '%$search%')";
         }
-    
+
         $querySelect = $this->db->query("SELECT p.*, u.nombre_umedida, e.nombre_estado, f.nombre_familia
             FROM producto p
             INNER JOIN familia f ON p.id_familia = f.id_familia
@@ -20,21 +20,25 @@ class ModeloProducto extends CI_Model
             $searchQuery
             ORDER BY id_producto
             LIMIT $limit OFFSET $offset");
-    
+
         return $querySelect->result_array();
     }
-    
+
     public function countProductos()
     {
-        $query = $this->db->query("SELECT COUNT(*) as count FROM producto WHERE id_estado = 1");
+        $query = $this->db->query("SELECT COUNT(*) as count FROM producto");
         return $query->row()->count;
     }
-    
-    public function insertProducto($nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado)
+
+    public function insertProducto($nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado, $PrecioOld,$DescripcionProducto)
     {
-        $precio_old = 0;
-        $this->db->query("INSERT INTO producto(nombre_producto, id_familia, cbarra, id_umedida, total, id_estado,precio_old) VALUES (UPPER('$nombre_producto'), '$id_familia', '$cbarra', '$id_umedida', '$total', '$id_estado', '$precio_old')");
+        $ultimo_id_result = $this->db->query("SELECT COALESCE(MAX(id_producto), 0) + 1 AS max_id FROM producto");
+        $row = $ultimo_id_result->row();
+        $max_id = $row->max_id;
+    
+        $this->db->query("INSERT INTO producto(id_producto, nombre_producto, id_familia, cbarra, id_umedida, total, id_estado, precio_old,descripcion) VALUES ('$max_id', UPPER('$nombre_producto'), '$id_familia', '$cbarra', '$id_umedida', '$total', '$id_estado', '$PrecioOld', '$DescripcionProducto')");
     }
+    
 
     public function comprobarCbarra($cbarra)
     {
@@ -67,16 +71,9 @@ class ModeloProducto extends CI_Model
         return $querySelect;
     }
 
-    public function updateProducto($id_producto, $nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado)
+    public function updateProducto($id_producto, $nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado,$Descripcion)
     {
-        // Obtener el valor actual de total antes de la actualización
-        $query = $this->db->query("SELECT total FROM producto WHERE id_producto = '$id_producto'");
-        $row = $query->row();
-        $precio_old = $row->total;
-
-        $this->db->query("UPDATE producto SET precio_old = '$precio_old' WHERE id_producto = '$id_producto'");
-
-        $this->db->query("UPDATE producto SET nombre_producto=UPPER('$nombre_producto'), id_familia='$id_familia',cbarra='$cbarra',id_umedida='$id_umedida',total='$total',id_estado='$id_estado' WHERE id_producto = '$id_producto'");
+        $this->db->query("UPDATE producto SET nombre_producto=UPPER('$nombre_producto'), id_familia='$id_familia',cbarra='$cbarra',id_umedida='$id_umedida',total='$total',id_estado='$id_estado' ,descripcion= '$Descripcion' WHERE id_producto = '$id_producto'");
     }
 
     public function obtenerEstado()
@@ -112,5 +109,22 @@ class ModeloProducto extends CI_Model
         $querySelect = $this->db->query("SELECT COUNT(*) AS cantidad_promociones FROM promocion");
         $result = $querySelect->row_array();
         return ($result['cantidad_promociones'] > 0);
+    }
+
+    public function actualizarPrecioAntiguo($id_producto, $nuevo_precio)
+    {
+
+        $datos = array(
+            'precio_old' => $nuevo_precio
+        );
+
+        $this->db->where('id_producto', $id_producto);
+        $this->db->update('producto', $datos);
+
+        if ($this->db->affected_rows() > 0) {
+            return true; 
+        } else {
+            return false;
+        }
     }
 }

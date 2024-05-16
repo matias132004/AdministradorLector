@@ -28,7 +28,9 @@ public function GuardarProducto() {
         $cbarra = $this->input->post('CampoCodBarra');
         $id_umedida = $this->input->post('CampoTmedida');
         $total = $this->input->post('CampoPrecio');
+        $PrecioOld = $this->input->post('CampoPrecioOld');
         $id_estado = $this->input->post('CampoEstado');
+        $Descripcion = $this->input->post('CampoDescripcionProducto');
 
         // Verificar si el código de barras ya existe
         $this->load->model('ModeloProducto');
@@ -36,7 +38,7 @@ public function GuardarProducto() {
             // Set alert message
             $alert_message = "No se puede guardar el producto porque el código de barras ya existe.";
         } else {
-            $this->ModeloProducto->insertProducto($nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado);
+            $this->ModeloProducto->insertProducto($nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado,$PrecioOld,$Descripcion);
             // Set success message or any other logic after successful insertion
             $alert_message = "El producto se ha guardado correctamente.";
         }
@@ -59,7 +61,7 @@ public function MostrarProducto() {
         redirect('ControladorLogin');
     }
 }
-
+   
 
 public function MostrarProductoAjax()
 {
@@ -131,9 +133,11 @@ public function MostrarProductoAjax()
             $id_umedida = $this->input->post('CampoUmedida');
             $total = $this->input->post('CampoPrecio');
             $id_estado = $this->input->post('CampoEstado');
+            $PrecioOld = $this->input->post('CampoPrecioOld');
+            $Descripcion = $this->input->post('CampoDescripcionProducto');
 
             $this->load->model('ModeloProducto');
-            $this->ModeloProducto->updateProducto($id_producto, $nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado);
+            $this->ModeloProducto->updateProducto($id_producto, $nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado,$PrecioOld,$Descripcion);
 
             redirect('ControladorProducto/mostrarProducto');
         } else {
@@ -215,13 +219,42 @@ public function MostrarProductoAjax()
             // Contraseña incorrecta
             echo "<script>
             alert('La contraseña es incorrecta.');
-            window.location.href = '" . base_url('ControladorPromocion/MostrarPromocion') . "';
+            window.location.href = '" . base_url('ControladorProducto/MostrarProducto') . "';
         </script>";
         }
     }else {
             redirect('ControladorLogin');
         }
     }
+
+    public function modificarPrecioAntiguo()
+{
+    // Verificar si la solicitud es a través de AJAX
+    if ($this->input->is_ajax_request()) {
+      
+        $id_producto = $this->input->post('id_producto');
+        $nuevo_precio = $this->input->post('nuevo_precio');
+        if (!empty($id_producto) && is_numeric($id_producto) && !empty($nuevo_precio)) {
+    
+            $this->load->model('ModeloProducto');
+
+            $resultado = $this->ModeloProducto->actualizarPrecioAntiguo($id_producto, $nuevo_precio);
+
+            if ($resultado) {
+
+                echo json_encode(array('success' => true));
+            } else {
+
+                echo json_encode(array('success' => false, 'message' => 'No se pudo actualizar el precio antiguo.'));
+            }
+        } else {
+
+            echo json_encode(array('success' => false, 'message' => 'Datos no válidos.'));
+        }
+    } else {
+        redirect('ControladorLogin');
+    }
+}
 }
 
 
