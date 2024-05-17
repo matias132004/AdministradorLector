@@ -16,9 +16,11 @@ class ControladorConfiguracionPromocion extends CI_Controller {
             $this->load->model('ModeloConfiguracionPromocion');
             $configuraciones = $this->ModeloConfiguracionPromocion->selectConfiguracionPromocion($idUsuario);
             $opciones_fuente = $this->ModeloConfiguracionPromocion->selectFontFamilyOptions();
+            $destacados = $this->ModeloConfiguracionPromocion->selectDestacados();
             // Pasa los datos de configuración a la vista
             $data['configuraciones'] = $configuraciones;
             $data['fuentes'] = $opciones_fuente;
+            $data['destacados'] = $destacados;
     
             $this->load->view('Promociones/ConfiguracionPromocion.php', $data);
         } else {
@@ -32,17 +34,20 @@ class ControladorConfiguracionPromocion extends CI_Controller {
         if ($this->session->userdata('id_usuario')) {
             // Obtener los datos del formulario
             $idUsuario = $this->session->userdata('id_usuario');
+            $camponombre = $this->input->post('camponombre');
+            $colorPrincipal = $this->input->post('colorPrincipal');
             $colorPrincipal = $this->input->post('colorPrincipal');
             $colorSecundario = $this->input->post('colorSecundario');
             $colorFuentePrincipal = $this->input->post('colorFuentePrincipal');
             $colorFuenteSecundario = $this->input->post('colorFuenteSecundario');
             $fontFamily = $this->input->post('fontFamily');
+            $iddestacado = $this->input->post('destacado');
 
             $this->load->model('ModeloConfiguracionPromocion');
             $id_datos_local = $this->ModeloConfiguracionPromocion->selectIdlocal($idUsuario);
             
             // Actualizar los datos en la base de datos
-            $this->ModeloConfiguracionPromocion->updateConfiguracion($id_datos_local, $colorPrincipal, $colorSecundario, $colorFuentePrincipal, $colorFuenteSecundario, $fontFamily);
+            $this->ModeloConfiguracionPromocion->updateConfiguracion($id_datos_local,$camponombre, $colorPrincipal, $colorSecundario, $colorFuentePrincipal, $colorFuenteSecundario, $fontFamily,$iddestacado);
 
             // Redireccionar o mostrar un mensaje de éxito
             redirect('ControladorConfiguracionPromocion/CargarPromocionConfiguracion');

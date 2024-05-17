@@ -35,7 +35,7 @@
                                         <th scope="col">Fecha de Inicio</th>
                                         <th scope="col">Fecha de Fin</th>
                                         <th scope="col">dias Aplicables</th>
-                                        <th scope="col">Agregar imagen</th>
+                                        <th scope="col">imagen</th>
                                         <th scope="col">Editar</th>
                                         <th scope="col">Eliminar</th>
                                     </tr>

@@ -23,15 +23,22 @@ public function selectConfiguracionPromocion($id_usuario) {
         return $query->result_array();
     }
     
+    public function selectDestacados() {
+        $query = $this->db->query('Select id_destacado, nombre_destacado FROM destacado');
+        return $query->result_array();
+    }
+    
     
 
-    public function updateConfiguracion($idlocal, $colorPrincipal, $colorSecundario, $colorFuentePrincipal, $colorFuenteSecundario, $fontFamily) {
+    public function updateConfiguracion($idlocal,$camponombre, $colorPrincipal, $colorSecundario, $colorFuentePrincipal, $colorFuenteSecundario, $fontFamily,$iddestacado) {
         $query = "UPDATE configuracionesPromocion SET 
+                  nombre = '$camponombre',
                   colorprincipal = '$colorPrincipal', 
                   colorsecundario = '$colorSecundario', 
                   colorfuentePrincipal = '$colorFuentePrincipal', 
                   colorfuenteSecundario = '$colorFuenteSecundario', 
-                  id_fuente = '$fontFamily' 
+                  id_fuente = '$fontFamily',
+                  id_destacado = '$iddestacado'
                   WHERE id_datos_local = '$idlocal'";
                   
         $this->db->query($query);

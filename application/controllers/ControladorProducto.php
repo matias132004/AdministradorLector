@@ -31,14 +31,14 @@ public function GuardarProducto() {
         $PrecioOld = $this->input->post('CampoPrecioOld');
         $id_estado = $this->input->post('CampoEstado');
         $Descripcion = $this->input->post('CampoDescripcionProducto');
-
+        $descripcionVisible = boolval($this->input->post('descripcionvisible'));
         // Verificar si el código de barras ya existe
         $this->load->model('ModeloProducto');
         if ($this->ModeloProducto->comprobarCbarra($cbarra)) {
             // Set alert message
             $alert_message = "No se puede guardar el producto porque el código de barras ya existe.";
         } else {
-            $this->ModeloProducto->insertProducto($nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado,$PrecioOld,$Descripcion);
+            $this->ModeloProducto->insertProducto($nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado,$PrecioOld,$Descripcion,$descripcionVisible);
             // Set success message or any other logic after successful insertion
             $alert_message = "El producto se ha guardado correctamente.";
         }
@@ -133,11 +133,11 @@ public function MostrarProductoAjax()
             $id_umedida = $this->input->post('CampoUmedida');
             $total = $this->input->post('CampoPrecio');
             $id_estado = $this->input->post('CampoEstado');
-            $PrecioOld = $this->input->post('CampoPrecioOld');
             $Descripcion = $this->input->post('CampoDescripcionProducto');
+            $Descripcionvisible = $this->input->post('descripcionvisible') ? 't' : 'f';
 
             $this->load->model('ModeloProducto');
-            $this->ModeloProducto->updateProducto($id_producto, $nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado,$PrecioOld,$Descripcion);
+            $this->ModeloProducto->updateProducto($id_producto, $nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado,$Descripcion, $Descripcionvisible);
 
             redirect('ControladorProducto/mostrarProducto');
         } else {

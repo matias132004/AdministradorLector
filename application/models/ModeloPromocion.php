@@ -14,7 +14,7 @@ class ModeloPromocion extends CI_Model {
         $max_id = $row->max_id; 
         
         $data = array(
-            'od_promocion' => $max_id,
+            'id_promocion' => $max_id,
             'id_producto' => $id_producto,
             'fecha_inicio' => $fecha_inicio,
             'fecha_fin' => $fecha_termino,

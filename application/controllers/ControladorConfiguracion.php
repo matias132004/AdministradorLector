@@ -37,11 +37,12 @@ class ControladorConfiguracion extends CI_Controller {
             $venta_volumen = $this->input->post('venta_volumen') ? 't' : 'f';
             $dictado_precios = $this->input->post('dictado_precios') ? 't' : 'f';
             $imagen_act = $this->input->post('imagen_act') ? 't' : 'f';
+            $precio_old_act = $this->input->post('precio_old_act') ? 't' : 'f';
                 $this->load->model('ModeloConfiguracion');
 
             $id_configuracion = $this->input->post('id_configuracion');
 
-            $this->ModeloConfiguracion->updateConfiguracion($id_configuracion, $venta_volumen, $dictado_precios, $imagen_act);
+            $this->ModeloConfiguracion->updateConfiguracion($id_configuracion, $venta_volumen, $dictado_precios, $imagen_act, $precio_old_act);
 
     
             redirect('ControladorConfiguracion/cargarModificarConfiguraciones');

@@ -57,13 +57,15 @@
                                     <?php } ?>
                                 </select>
                             </div>
-                            <div class="col">
+                            <div class="col-6">
                                 <label for="idDescripcionProducto" class="form-label">Descripcion del Producto</label>
                                 <input type="text" name="CampoDescripcionProducto" id="idDescripcionProducto" class="form-control"  autofocus value="<?php echo $datos['descripcion'] ?>">
                             </div>
+                            <div class="col-6">
+                                    <label for="descripcionvisible">descripcion Visible en el lector</label>
+                                    <input type="checkbox" name="descripcionvisible" <?php echo ($datos['descripcionvisible'] == 't') ? 'checked' : ''; ?> data-toggle="toggle" data-size="xs">
+                                </div>
                         </div>
-                        <br>
-                        <br>
                         <input type="submit" value="Guardar" class="btn btn-primary" onclick="return confirm('¿Estás seguro de que deseas modificar los datos del producto?');">
                     </form>
                     

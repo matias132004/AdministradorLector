@@ -30,13 +30,13 @@ class ModeloProducto extends CI_Model
         return $query->row()->count;
     }
 
-    public function insertProducto($nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado, $PrecioOld,$DescripcionProducto)
+    public function insertProducto($nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado, $PrecioOld,$DescripcionProducto,$descripcionVisible)
     {
         $ultimo_id_result = $this->db->query("SELECT COALESCE(MAX(id_producto), 0) + 1 AS max_id FROM producto");
         $row = $ultimo_id_result->row();
         $max_id = $row->max_id;
     
-        $this->db->query("INSERT INTO producto(id_producto, nombre_producto, id_familia, cbarra, id_umedida, total, id_estado, precio_old,descripcion) VALUES ('$max_id', UPPER('$nombre_producto'), '$id_familia', '$cbarra', '$id_umedida', '$total', '$id_estado', '$PrecioOld', '$DescripcionProducto')");
+        $this->db->query("INSERT INTO producto(id_producto, nombre_producto, id_familia, cbarra, id_umedida, total, id_estado, precio_old,descripcion,descripcionvisible) VALUES ('$max_id', UPPER('$nombre_producto'), '$id_familia', '$cbarra', '$id_umedida', '$total', '$id_estado', '$PrecioOld','$DescripcionProducto', '$descripcionVisible')");
     }
     
 
@@ -71,9 +71,9 @@ class ModeloProducto extends CI_Model
         return $querySelect;
     }
 
-    public function updateProducto($id_producto, $nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado,$Descripcion)
+    public function updateProducto($id_producto, $nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado,$Descripcion,$descripcionVisible)
     {
-        $this->db->query("UPDATE producto SET nombre_producto=UPPER('$nombre_producto'), id_familia='$id_familia',cbarra='$cbarra',id_umedida='$id_umedida',total='$total',id_estado='$id_estado' ,descripcion= '$Descripcion' WHERE id_producto = '$id_producto'");
+        $this->db->query("UPDATE producto SET nombre_producto=UPPER('$nombre_producto'), id_familia='$id_familia',cbarra='$cbarra',id_umedida='$id_umedida',total='$total',id_estado='$id_estado' , descripcion = '$Descripcion' ,descripcionvisible= '$descripcionVisible'  WHERE id_producto = '$id_producto'");
     }
 
     public function obtenerEstado()

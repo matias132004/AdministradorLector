@@ -52,6 +52,10 @@
                                 <label for="idDescripcionProducto" class="form-label">Descripcion del Producto</label>
                                 <input type="text" name="CampoDescripcionProducto" id="idDescripcionProducto" class="form-control" required autofocus>
                             </div>
+                            <div class="col-6">
+                                <label for="descripcionvisible">descripcion visible en el lector:</label>
+                                <input type="checkbox" name="descripcionvisible" checked data-toggle="toggle" data-size="xs">
+                            </div>
                         </div>
                         <br>
                         <br>
@@ -61,15 +65,15 @@
                     <?php require_once "application/views/footer/Footer.php"; ?>
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
-                        $(document).ready(function () {
+                        $(document).ready(function() {
                             // Realiza una solicitud AJAX para obtener los datos en formato JSON
                             $.ajax({
                                 url: '<?php echo base_url() ?>ControladorProducto/cargarEstado',
                                 type: 'GET',
                                 dataType: 'json',
-                                success: function (data) {
+                                success: function(data) {
                                     var dropdown = $('#idEstado');
-                                    $.each(data, function (key, value) {
+                                    $.each(data, function(key, value) {
                                         dropdown.append($('<option>').text(value.nombre_estado).val(value.id_estado));
                                     });
                                 }
@@ -77,15 +81,15 @@
                         });
                     </script>
                     <script>
-                        $(document).ready(function () {
+                        $(document).ready(function() {
                             // Realiza una solicitud AJAX para obtener los datos en formato JSON
                             $.ajax({
                                 url: '<?php echo base_url() ?>ControladorProducto/cargarUmedida',
                                 type: 'GET',
                                 dataType: 'json',
-                                success: function (data) {
+                                success: function(data) {
                                     var dropdown = $('#idTmedida');
-                                    $.each(data, function (key, value) {
+                                    $.each(data, function(key, value) {
                                         dropdown.append($('<option>').text(value.nombre_umedida).val(value.id_umedida));
                                     });
                                 }
@@ -93,15 +97,15 @@
                         });
                     </script>
                     <script>
-                        $(document).ready(function () {
+                        $(document).ready(function() {
                             // Realiza una solicitud AJAX para obtener los datos en formato JSON
                             $.ajax({
                                 url: '<?php echo base_url() ?>ControladorProducto/cargarFamilia',
                                 type: 'GET',
                                 dataType: 'json',
-                                success: function (data) {
+                                success: function(data) {
                                     var dropdown = $('#idNombreFamilia');
-                                    $.each(data, function (key, value) {
+                                    $.each(data, function(key, value) {
                                         dropdown.append($('<option>').text(value.nombre_familia).val(value.id_familia));
                                     });
                                 }
@@ -109,7 +113,7 @@
                         });
                     </script>
                     <!-- Check if there's an alert message to display -->
-                    <?php if (isset($alert_message)): ?>
+                    <?php if (isset($alert_message)) : ?>
                         <script>
                             // Display alert using JavaScript
                             alert("<?php echo $alert_message; ?>");
