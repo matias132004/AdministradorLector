@@ -38,7 +38,7 @@ class ControladorPersonalizacion extends CI_Controller {
         $logo = $this->input->post('logo_act') == 'on' ? 't' : 'f';
 
         if ($this->ModeloPersonalizacion->guardarCambios($id_datos_local, $nombre, $descripcion, $logo)) {
-            redirect('ControladorMenu/index');
+            redirect('ControladorPersonalizacion/cargarEditarLocal');
         } else {
             $this->load->view('Personalizacion/errorCarga');
         }
@@ -138,7 +138,7 @@ class ControladorPersonalizacion extends CI_Controller {
                     $this->load->model('ModeloPersonalizacion');
                     $this->ModeloPersonalizacion->guardarImagen($id_datos_local, $nombre, $imagen_data, $img_tipo);
                     // Redirigir a la página de edición del local
-                    redirect('ControladorPersonalizacion/cargarEditarLocal');
+                    redirect('ControladorPersonalizacion/CargarImagenesFondo/'. $id_datos_local);
                 } else {
                     // La carga de la imagen falló, muestra un mensaje de error
                     $error = array('error' => $this->upload->display_errors());
@@ -161,7 +161,7 @@ class ControladorPersonalizacion extends CI_Controller {
             $this->load->model('ModeloPromocion');
             $this->ModeloPersonalizacion->deletePersonalizacionFondo($id_images);
 
-            redirect('ControladorMenu/index');
+            redirect('ControladorPersonalizacion/cargarEditarLocal');
         } else {
             redirect('ControladorLogin');
         }
@@ -175,7 +175,7 @@ class ControladorPersonalizacion extends CI_Controller {
             $this->load->model('ModeloPromocion');
             $this->ModeloPersonalizacion->deletePersonalizacionLogo($id_images);
 
-            redirect('ControladorMenu/index');
+            redirect('ControladorPersonalizacion/cargarEditarLocal');
         } else {
             redirect('ControladorLogin');
         }

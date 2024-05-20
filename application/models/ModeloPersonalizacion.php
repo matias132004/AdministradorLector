@@ -101,6 +101,15 @@ public function deletePersonalizacionFondo($id_images) {
     return $querySelect;
 
 }
+public function selectidlocal($id_images) {
+    $query = $this->db->query("SELECT id_datos_local FROM images WHERE id = '$id_images'");
+    if ($query->num_rows() > 0) {
+        return $query->row()->id_datos_local;
+    } else {
+        return null;
+    }
+}
+
 
 
 

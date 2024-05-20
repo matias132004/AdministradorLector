@@ -35,6 +35,7 @@
                                         <th scope="col">Fecha de Inicio</th>
                                         <th scope="col">Fecha de Fin</th>
                                         <th scope="col">dias Aplicables</th>
+                                        <th scope="col">Precio</th>
                                         <th scope="col">imagen</th>
                                         <th scope="col">Editar</th>
                                         <th scope="col">Eliminar</th>
@@ -78,6 +79,7 @@
                                                 echo implode(', ', $dias_aplicables);
                                                 ?>
                                             </td>
+                                            <td>$<?=$promocion['total'] ?></td>
                                             <td>
                                                 <a href="<?php echo base_url() ?>ControladorImagen/AgregarImagenCargar/<?php echo $promocion['id_promocion'] ?>"><button class="btn btn-outline-info"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
                                                             <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>

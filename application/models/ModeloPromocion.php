@@ -33,7 +33,7 @@ class ModeloPromocion extends CI_Model {
     }
 
     public function obtenerPromociones() {
-        $query = $this->db->query("SELECT p.id_promocion, p.id_producto, pr.nombre_producto, pr.cbarra, p.fecha_inicio,p.fecha_fin, p.lunes, p.martes, p.miercoles, p.jueves, p.viernes, p.sabado, p.domingo
+        $query = $this->db->query("SELECT pr.total AS total ,p.id_promocion, p.id_producto, pr.nombre_producto, pr.cbarra, p.fecha_inicio,p.fecha_fin, p.lunes, p.martes, p.miercoles, p.jueves, p.viernes, p.sabado, p.domingo
 FROM promocion p
 INNER JOIN producto pr ON p.id_producto = pr.id_producto
 ");

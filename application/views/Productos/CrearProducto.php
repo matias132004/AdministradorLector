@@ -50,7 +50,7 @@
                             </div>
                             <div class="col-6">
                                 <label for="idDescripcionProducto" class="form-label">Descripcion del Producto</label>
-                                <input type="text" name="CampoDescripcionProducto" id="idDescripcionProducto" class="form-control" required autofocus>
+                                <input type="text" name="CampoDescripcionProducto" id="idDescripcionProducto" class="form-control" autofocus>
                             </div>
                             <div class="col-6">
                                 <label for="descripcionvisible">descripcion visible en el lector:</label>

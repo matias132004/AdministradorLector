@@ -56,7 +56,7 @@
                         Agregar Nuevas Imágenes de Fondo
                     </div>
                     <div class="card-body">
-                        <form action="<?= base_url('ControladorPersonalizacion/actualizarImagenesFondo') ?>" method="post" enctype="multipart/form-data">
+                        <form action="<?= base_url('ControladorPersonalizacion/actualizarImagenesFondo/'.$datos_local) ?>" method="post" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <input type="hidden" name="id_datos_local" value="<?= $datos_local ?>">
                                     <label for="imagenes" class="form-label">Seleccionar Imágenes</label>

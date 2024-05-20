@@ -35,7 +35,7 @@
                         <input type="submit" value="Guardar" class="btn btn-primary" onclick="return confirm('¿Estás seguro de que deseas modificar los datos de la Unidad de Medida?');">
                     </form>
 
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <?php require_once "application/views/footer/Footer.php"; ?>
                     <script>
                         $(document).ready(function () {
                             // Realiza una solicitud AJAX para obtener los datos en formato JSON
@@ -61,5 +61,4 @@
         </div>
     </div>
 </div>
-<?php?>
-<?php require_once "application/views/footer/Footer.php"; ?>
+

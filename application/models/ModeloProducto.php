@@ -16,7 +16,6 @@ class ModeloProducto extends CI_Model
             INNER JOIN familia f ON p.id_familia = f.id_familia
             INNER JOIN umedida u ON p.id_umedida = u.id_umedida
             INNER JOIN estado e ON p.id_estado = e.id_estado
-            WHERE p.id_estado = 1
             $searchQuery
             ORDER BY id_producto
             LIMIT $limit OFFSET $offset");
@@ -89,14 +88,6 @@ class ModeloProducto extends CI_Model
         $this->db->select('id_umedida, nombre_umedida');
         $this->db->order_by('nombre_umedida', 'ASC');
         $query = $this->db->get('umedida');
-        return $query->result_array();
-    }
-
-    public function obtenerFamilia()
-    {
-        $this->db->select('id_familia, nombre_familia');
-        $this->db->order_by('nombre_familia', 'ASC');
-        $query = $this->db->get('familia');
         return $query->result_array();
     }
 

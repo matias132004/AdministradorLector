@@ -12,10 +12,10 @@
                     <form method="post" action="<?php echo base_url() ?>ControladorConfiguracion/ModificarConfiguracion" method="POST">
                         <div class="row">
                             <input type="hidden" name="id_configuracion" value="<?php echo $configuraciones['id_configuracion']; ?>">
-                              <!--  <div class="col-6">
+                               <div class="col-6">
                                     <label for="venta_volumen">Venta Volumen:</label>
                                     <input type="checkbox" name="venta_volumen" <?php echo ($configuraciones['venta_volumen'] == 't') ? 'checked' : ''; ?> data-toggle="toggle" data-size="xs">
-                                </div>   -->
+                                </div>   
                                 <div class="col-6">
                                     <label for="dictado_precios">Dictado de Precios:</label>
                                     <input type="checkbox" name="dictado_precios" <?php echo ($configuraciones['dictado_precios'] == 't') ? 'checked' : ''; ?> data-toggle="toggle" data-size="xs">
