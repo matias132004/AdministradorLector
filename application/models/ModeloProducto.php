@@ -90,7 +90,13 @@ class ModeloProducto extends CI_Model
         $query = $this->db->get('umedida');
         return $query->result_array();
     }
-
+    public function obtenerFamilia()
+    {
+        $this->db->select('id_familia, nombre_familia');
+        $this->db->order_by('nombre_familia', 'ASC');
+        $query = $this->db->get('familia');
+        return $query->result_array();
+    }
     public function deleteTodo()
     {
         return $this->db->query("DELETE FROM producto");

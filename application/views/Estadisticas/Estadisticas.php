@@ -22,10 +22,11 @@
         <!-- /.card-body -->
       </div>
     </div>
+
     <div class="col-md-6">
       <div class="card card-danger">
         <div class="card-header">
-          <h3 class="card-title">Productos más Escaneados de los Últimos 6 Meses</h3>
+          <h3 class="card-title">buscar cantidad de veces ha sido escaneado</h3>
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse">
               <i class="fas fa-minus"></i>
@@ -36,21 +37,66 @@
           </div>
         </div>
         <div class="card-body">
-          <canvas id="barChart" style="min-height: 400px; height: 400px; max-height: 400px; max-width: 100%;"></canvas>
+          <input type="text" id="searchInput" class="form-control" placeholder="Ingrese el código de barras">
+          <button id="searchButton" class="btn btn-primary mt-2">Buscar</button>
+          <div id="searchResult">
+            <h4>Resultados de la búsqueda:</h4>
+            <h4>Resultados de la búsqueda:</h4>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Código de Barras</th>
+                  <th>Nombre del Producto</th>
+                  <th>Número de Escaneos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($escaneos as $escaneo) : ?>
+                  <tr>
+                    <td><?php echo $escaneo->cbarra; ?></td>
+                    <td><?php echo $escaneo->nombre_producto; ?></td>
+                    <td><?php echo $escaneo->num_escaneos; ?></td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+
+          </div>
+
         </div>
-        <!-- /.card-body -->
       </div>
     </div>
+
+
   </div>
 </div>
 
+</div>
+
 <?php require_once "application/views/footer/Footer.php"; ?>
+<script>
+  $(document).ready(function() {
+    $('#searchButton').click(function() {
+      var searchTerm = $('#searchInput').val();
+      $.ajax({
+        type: 'POST',
+        url: '<?php echo base_url("ControladorEscaneados/obtenerEscaneosPorCodigoBarras"); ?>',
+        data: {
+          searchTerm: searchTerm
+        },
+        success: function(response) {
+          $('#searchResult').html(response);
+        }
+      });
+    });
+  });
+</script>
+
 
 <script>
   $(function() {
     // Obtener datos de PHP y convertirlos en formato JavaScript
     var resultadosPie = <?php echo json_encode($resultados_pie); ?>;
-    var resultados = <?php echo json_encode($resultados); ?>;
 
     // Procesar datos para el gráfico de pie
     var labelsPie = [];
@@ -60,33 +106,11 @@
       dataPie.push(item.num_escaneos);
     });
 
-    // Procesar datos para el gráfico de barras
-    var labelsBar = [];
-    var dataBar = [];
-    resultados.forEach(function(item) {
-      labelsBar.push(item.mes);
-      dataBar.push(item.num_escaneos);
-    });
-
     // Configuración del gráfico de pie
     var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
     var pieOptions = {
       maintainAspectRatio: false,
       responsive: true,
-    };
-
-    // Configuración del gráfico de barras
-    var barChartCanvas = $('#barChart').get(0).getContext('2d');
-    var barOptions = {
-      maintainAspectRatio: false,
-      responsive: true,
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
     };
 
     // Crear el gráfico de pie
@@ -105,20 +129,6 @@
       options: pieOptions
     });
 
-    // Crear el gráfico de barras
-    new Chart(barChartCanvas, {
-      type: 'bar',
-      data: {
-        labels: labelsBar,
-        datasets: [{
-          label: 'Productos Escaneados',
-          backgroundColor: 'rgba(60,141,188,0.9)',
-          borderColor: 'rgba(60,141,188,0.8)',
-          borderWidth: 2,
-          data: dataBar
-        }]
-      },
-      options: barOptions
-    });
+
   });
 </script>

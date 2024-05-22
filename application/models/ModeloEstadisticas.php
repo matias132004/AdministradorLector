@@ -18,19 +18,21 @@ class ModeloEstadisticas extends CI_Model {
         return $query->result_array();
     }
 
-    public function obtener_productos_meses() {
-        // Ejecutar la consulta SQL para obtener los productos más escaneados de cada mes
-        $query = $this->db->query("SELECT e.id_producto, e.nombre_producto, COUNT(e.cbarra) AS num_escaneos, EXTRACT(MONTH FROM e.fecha_escaneado) AS mes
-            FROM escaneados e
-            LEFT JOIN producto p ON e.id_producto = p.id_producto
-            WHERE e.fecha_escaneado >= CURRENT_DATE - INTERVAL '6 months'
-                AND e.cbarra = p.cbarra
-                AND e.id_producto = p.id_producto
-                AND e.nombre_producto = p.nombre_producto
-            GROUP BY e.id_producto, e.nombre_producto, EXTRACT(MONTH FROM e.fecha_escaneado)
-            ORDER BY EXTRACT(MONTH FROM e.fecha_escaneado), num_escaneos DESC");
-
-        // Devolver los resultados
-        return $query->result_array();
+    public function obtenerEscaneosPorCodigoBarras($codigoBarras) {
+        $this->db->select('COUNT(e.cbarra) AS num_escaneos, e.id_producto, e.nombre_producto, e.cbarra, p.total');
+        $this->db->from('escaneados e');
+        $this->db->join('producto p', 'e.id_producto = p.id_producto', 'left');
+        $this->db->where('e.fecha_escaneado >= CURRENT_DATE - INTERVAL \'30 days\'');
+        $this->db->where('e.cbarra', $codigoBarras);
+        $this->db->where('e.cbarra = p.cbarra');
+        $this->db->where('e.id_producto = p.id_producto');
+        $this->db->where('e.nombre_producto = p.nombre_producto');
+        $this->db->group_by('e.id_producto, e.nombre_producto, e.cbarra, p.total');
+        $this->db->order_by('num_escaneos', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        return $query->result();
     }
+
+    
 }

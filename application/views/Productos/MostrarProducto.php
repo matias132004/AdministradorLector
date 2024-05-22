@@ -4,15 +4,24 @@
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header bg-dark text-white">
-                    Listado de Productos
+            <div class="card card-danger">
+                <div class="card-header">
+                    <h3 class="card-title">Listado de Productos</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="card-body">
+
                     <div class="d-flex justify-content-end py-1 m-3">
                         <a href="<?php echo base_url() ?>ControladorProducto/AgregarProducto">
                             <button class="btn btn-outline-success">Agregar Producto <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark-plus-fill" viewBox="0 0 16 16">
-                                    <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M8.5 7v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 1 0"/>
+                                    <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M8.5 7v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 1 0" />
                                 </svg></button>
                         </a>
                         <button id="btnEliminar" class="btn btn-outline-danger">
@@ -47,7 +56,7 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -74,10 +83,10 @@
 <?php require_once "application/views/footer/Footer.php"; ?>
 
 <script>
-     $(document).ready(function() {
+    $(document).ready(function() {
         $("#btnEliminar").click(function() {
-        $('#confirmDeleteModal').modal('show');
-    });
+            $('#confirmDeleteModal').modal('show');
+        });
 
 
         $('#btnCancelar').on('click', function() {
@@ -95,15 +104,30 @@
                 "url": "<?php echo base_url('ControladorProducto/MostrarProductoAjax'); ?>",
                 "type": "GET"
             },
-            "columns": [
-                { "data": "id_producto" },
-                { "data": "nombre_producto" },
-                { "data": "nombre_familia" },
-                { "data": "cbarra" },
-                { "data": "nombre_umedida" },
-                { "data": "precio_old" },
-                { "data": "total" },
-                { "data": "nombre_estado" },
+            "columns": [{
+                    "data": "id_producto"
+                },
+                {
+                    "data": "nombre_producto"
+                },
+                {
+                    "data": "nombre_familia"
+                },
+                {
+                    "data": "cbarra"
+                },
+                {
+                    "data": "nombre_umedida"
+                },
+                {
+                    "data": "precio_old"
+                },
+                {
+                    "data": "total"
+                },
+                {
+                    "data": "nombre_estado"
+                },
                 {
                     "data": null,
                     "render": function(data, type, row) {

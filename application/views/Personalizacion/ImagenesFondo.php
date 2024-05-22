@@ -3,9 +3,17 @@
 <div class="container">
     <div class="row py-5 justify-content-center">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header bg-dark text-white">
-                    Imágenes de Fondo
+        <div class="card card-danger">
+                <div class="card-header">
+                    <h3 class="card-title">Imagenes de Fondo</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <?php if (empty($imagenes_fondo)): ?>
@@ -51,11 +59,19 @@
 
         <div class="row py-5 justify-content-center">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-header bg-dark text-white">
-                        Agregar Nuevas Imágenes de Fondo
+            <div class="card card-danger">
+                <div class="card-header">
+                    <h3 class="card-title">Agregar nuevas Imagenes de Fondo</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
-                    <div class="card-body">
+                </div>
+                <div class="card-body">
                         <form action="<?= base_url('ControladorPersonalizacion/actualizarImagenesFondo/'.$datos_local) ?>" method="post" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <input type="hidden" name="id_datos_local" value="<?= $datos_local ?>">

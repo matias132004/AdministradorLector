@@ -4,10 +4,19 @@
     <div class="row">
         <div class="d-sm-flex d-block align-items-center justify-content-between mb-lg-9"><!-- Cambiado justify-content-center a justify-content-end -->
             <div class="col-lg-12 m-6">
-                <div class="card">
-                    <div class="card-header bg-dark text-white">
-                        Usuarios
+            <div class="card card-danger">
+                <div class="card-header">
+                    <h3 class="card-title">Listado de Usuarios</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
+                </div>
+                <div class="card-body">
                     <div class="d-flex justify-content-end py-1 m-3">
                         <a href="<?php echo base_url() ?>ControladorUsuarios/crearUsuario">
                             <button class="btn btn-outline-success">Agregar Usuario <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark-plus-fill" viewBox="0 0 16 16">

@@ -5,17 +5,25 @@
     <div class="row"> 
         <div class="d-sm-flex d-block align-items-center justify-content-between mb-lg-9">
             <div class="col-lg-12 m-6">
-                <div class="card">
-                    <div class="card-header bg-dark text-white">
-                        Opciones de operabilidad.
+          <div class="card card-danger">
+                <div class="card-header">
+                    <h3 class="card-title">Opciones de Operabilidad.</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
-                    <div class="card-body">
+                </div>
+                <div class="card-body">
                         <button id="btnSincronizar" class="btn btn-outline-success mb-3">Sincronizar Datos con dat@PDV</button>
                         <button id="btnMostrarModal" class="btn btn-outline-primary mb-3">Ver QR</button>
                         <a href="https://www.remove.bg/es" target="_blank" class="btn btn-outline-primary mb-3">Pagina Web para eliminar fondo de imagenes</a>
                         <a href="http://192.168.1.190/Lector_Precios/ControladorLogin/index" target="_blank" class="btn btn-outline-primary mb-3">Acceder a Lector de Precios</a>
                     </div>
-                </div>
+                </di>
             </div>
         </div>
     </div>
