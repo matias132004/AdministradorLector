@@ -40,9 +40,7 @@ class ControladorPromocion extends CI_Controller
 
             $this->load->model('ModeloPromocion');
 
-            $resultado = $this->ModeloPromocion->selectProducto();
-            $data['datos'] = $resultado;
-            $this->load->view('Promociones/AgregarPromocion', $data);
+            $this->load->view('Promociones/AgregarPromocion');
         } else {
             redirect('ControladorLogin');
         }
@@ -171,5 +169,32 @@ class ControladorPromocion extends CI_Controller
         }
     }
 
- 
+    public function MostrarProductoAjax()
+    {
+        if ($this->session->userdata('id_usuario')) {
+            $this->load->model('ModeloPromocion');
+    
+            $draw = intval($this->input->get("draw"));
+            $start = intval($this->input->get("start"));
+            $length = intval($this->input->get("length"));
+            $search = $this->input->get("search")["value"]; // Obtener el término de búsqueda
+    
+            $productos = $this->ModeloPromocion->selectProducto2($length, $start, $search);
+            $totalProductos = $this->ModeloPromocion->countProductos($search);
+    
+            $data = array(
+                "draw" => $draw,
+                "recordsTotal" => $totalProductos,
+                "recordsFiltered" => $totalProductos,
+                "data" => $productos
+            );
+    
+            echo json_encode($data);
+        } else {
+            echo json_encode(['error' => 'No autenticado']);
+        }
+    }
+    
+    
+    
 }

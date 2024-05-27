@@ -12,9 +12,8 @@ class ControladorPrecioVolumen extends CI_Controller
     {
         if ($this->session->userdata('id_usuario')) {
             $this->load->model('ModeloPrecioVolumen');
-            $resultado = $this->ModeloPrecioVolumen->selectProducto();
-            $data['datos'] = $resultado;
-            $this->load->view('PrecioVolumen/CrearPrecioVolumen', $data);
+
+            $this->load->view('PrecioVolumen/CrearPrecioVolumen');
         } else {
             redirect('ControladorLogin'); // Redireccionar al controlador de login si no está autenticado
         }
@@ -155,4 +154,33 @@ class ControladorPrecioVolumen extends CI_Controller
             redirect('ControladorLogin');
         }
     }
+
+    public function MostrarProductoAjax()
+    {
+        if ($this->session->userdata('id_usuario')) {
+            $this->load->model('ModeloPrecioVolumen');
+    
+            $draw = intval($this->input->get("draw"));
+            $start = intval($this->input->get("start"));
+            $length = intval($this->input->get("length"));
+            $search = $this->input->get("search")["value"]; // Obtener el término de búsqueda
+    
+            $productos = $this->ModeloPrecioVolumen->selectProducto2($length, $start, $search);
+            $totalProductos = $this->ModeloPrecioVolumen->countProductos($search);
+    
+            $data = array(
+                "draw" => $draw,
+                "recordsTotal" => $totalProductos,
+                "recordsFiltered" => $totalProductos,
+                "data" => $productos
+            );
+    
+            echo json_encode($data);
+        } else {
+            echo json_encode(['error' => 'No autenticado']);
+        }
+    }
+    
+    
+
 }

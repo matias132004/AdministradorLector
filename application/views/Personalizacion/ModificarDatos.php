@@ -46,7 +46,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="logoModal" tabindex="-1" aria-labelledby="logoModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -56,14 +55,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action=" <?php echo site_url('ControladorPersonalizacion/ActualizarImagenLocal'); ?> " method="post" enctype="multipart/form-data">
+                <form action="<?php echo site_url('ControladorPersonalizacion/ActualizarImagenLocal'); ?>" method="post" enctype="multipart/form-data">
                     <?php if ($fila['logo_act'] == 't') : ?>
                         <input type="hidden" name="id_datos_local2" value="<?= $fila['id_datos_local'] ?>">
                         <?php if ($fila['logo_act'] == 't' && isset($imagen)) : ?>
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label for="imagen_actual">Imagen Actual</label>
-                                    <img src="<?php echo base_url('uploads/DatosLocal/' . $imagen->nombre); ?>" alt="Imagen actual" class="img-fluid">
+                                    <img src="<?php echo base_url('uploads/DatosLocal/' . $imagen->nombre); ?>" id="imagen_actual" alt="Imagen actual" class="img-fluid">
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -85,10 +84,15 @@
                                             <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1z" />
                                     </svg></button>
                             </div>
+                            <div class="col-3">
+                                <!-- Botón Cancelar -->
+                                <button type="button" class="btn btn-outline-secondary" onclick="cancelarCambio()">Cancelar</button>
+                            </div>
                         </div>
                     <?php endif; ?>
                 </form>
                 <?php if ($fila['logo_act'] == 't' && isset($imagen)) : ?>
+                    <br>
                     <form method="post" action="<?php echo base_url() ?>ControladorPersonalizacion/EliminarImagenLogo/<?php echo $imagen->id; ?>">
                         <button type="submit" class="btn btn-danger">Eliminar Logo</button>
                     </form>
@@ -99,3 +103,29 @@
 </div>
 
 <?php require_once "application/views/footer/Footer.php"; ?>
+
+<script>
+    // Función para cargar la imagen seleccionada en un elemento img
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#imagen_actual').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Evento change del input file para llamar a la función previewImage
+    $('#imagenes').change(function() {
+        previewImage(this);
+    });
+
+    // Función para cancelar el cambio y mostrar la imagen actual
+    function cancelarCambio() {
+        $('#imagenes').val('');
+        $('#imagen_actual').attr('src', '<?php echo base_url('uploads/DatosLocal/' . $imagen->nombre); ?>');
+    }
+</script>

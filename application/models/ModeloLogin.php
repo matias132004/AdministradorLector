@@ -10,7 +10,7 @@ class ModeloLogin extends CI_Model {
     public function iniciarSesion($rut) {
         $querySelect = $this->db->query("SELECT dt.pago FROM usuario u INNER JOIN datos_local dt ON u.id_datos_local = dt.id_datos_local WHERE u.rut = ? AND dt.pago = 't'", array($rut));
     
-        if ($querySelect->num_rows() > 0) { // Verificar si la consulta devolvió algún resultado
+        if ($querySelect->num_rows() > 0) { 
             $this->db->select('*');
             $this->db->from('usuario');
             $this->db->where('rut', $rut);

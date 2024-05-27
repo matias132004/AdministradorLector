@@ -33,7 +33,7 @@
                         </button>
                     </div>
                     <div class="table-responsive">
-                        <table id="idTabla" class="table table-bordered-lg">
+                        <table id="idTabla" class="table-responsive table-bordered-lg">
                             <thead>
                                 <tr>
                                     <th>id producto</th>

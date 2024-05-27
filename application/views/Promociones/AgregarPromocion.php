@@ -9,7 +9,7 @@
                     Formulario de registro de Promociones.
                 </div>
                 <div class="card-body">
-                    <form id="formularioAgregarPromocion" action="<?php echo base_url() ?>ControladorPromocion/GuardarPromocion" method="POST" enctype="multipart/form-data">
+                    <form id="formularioAgregarPromocion" action="<?php echo base_url() ?>ControladorPromocion/GuardarPromocion" method="POST">
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="id_producto">ID Producto:</label>
@@ -19,9 +19,6 @@
                                 <label for="nombre_producto">Nombre Producto:</label>
                                 <select class="form-control" id="nombre_producto" name="nombre_producto" disabled>
                                     <option value="">No hay Productos Seleccionados</option>
-                                    <?php foreach ($datos as $dato) : ?>
-                                        <option value="<?= $dato['nombre_producto'] ?>" data-id="<?= $dato['id_producto'] ?>"><?= $dato['nombre_producto'] ?></option>
-                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -94,60 +91,60 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="container">
-            <div class="row">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Seleccionar Productos</h5>
-                        <button type="button" class="btn-close" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="table-responsive">
-                            <table id="idTabla" class="table table-bordered-lg">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Id Producto</th>
-                                        <th scope="col">Nombre Producto</th>
-                                        <th scope="col">código de barras</th>
-                                        <th scope="col">Precio Antiguo</th>
-                                        <th scope="col">Precio</th>
-                                        <th scope="col">Acción</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($datos as $dato) : ?>
-                                        <tr>
-                                            <td><?= $dato['id_producto'] ?></td>
-                                            <td><?= $dato['nombre_producto'] ?></td>
-                                            <td><?= $dato['cbarra'] ?></td>
-                                            <td>$<?= $dato['precio_old'] ?></td>
-                                            <td>$<?= $dato['total'] ?></td>
-                                            <td>
-                                                <button type="button" class="btn btn-success agregar-producto" data-id="<?= $dato['id_producto'] ?>" data-nombre="<?= $dato['nombre_producto'] ?>">Agregar</button>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Seleccionar Productos</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table id="idTabla" class="table table-bordered-lg">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id Producto</th>
+                                <th scope="col">Nombre Producto</th>
+                                <th scope="col">código de barras</th>
+                                <th scope="col">Precio Antiguo</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productos-container">
+                            <!-- Data will be filled by DataTable -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 <?php require_once "application/views/footer/Footer.php"; ?>
 
 <script>
-    $(document).ready(function () {
-
-        $("#idTabla").DataTable({
-            responsive: true,
-            language: {
+   $(document).ready(function() {
+    var table = $('#idTabla').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "<?= base_url('ControladorPromocion/MostrarProductoAjax') ?>",
+            "type": "GET"
+        },
+        "columns": [
+            { "data": "id_producto" },
+            { "data": "nombre_producto" },
+            { "data": "cbarra" },
+            { "data": "precio_old" },
+            { "data": "total" },
+            {
+                "data": null,
+                "render": function(data, type, row) {
+                    return '<button id="btn-select" class="btn btn-outline-primary" data-id="' + row.id_producto + '">Seleccionar</button>';
+                }
+            }
+        ],
+                    "language": {
                 "decimal": "",
                 "emptyTable": "No hay información",
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
@@ -166,49 +163,38 @@
                     "next": "Siguiente",
                     "previous": "Anterior"
                 }
-            },
-            dom: 'Bfrtip',
-
-        });
-
-        $("#id_producto").on("input", function () {
-            var id_producto = $(this).val();
-            var nombre_producto = $("#nombre_producto option[data-id='" + id_producto + "']").val();
-            $("#nombre_producto").val(nombre_producto);
-        });
-
-        $("#AbrirModal").click(function () {
-            $('#myModal').modal('show');
-        });
-
-        $('.modal .btn-close').on('click', function () {
-            $('#myModal').modal('hide');
-        });
-
-        $(document).on('click', '.agregar-producto', function () {
-            var id_producto = $(this).data('id');
-            var nombre_producto = $(this).data('nombre');
-            $("#id_producto").val(id_producto);
-            $("#nombre_producto").val(nombre_producto);
-            $('#myModal').modal('hide');
-        });
-
-        $("#fecha_inicio").on("change", function () {
-            var selectedDate = new Date($(this).val());
-            var currentDate = new Date();
-            if (selectedDate < currentDate) {
-                alert("La fecha de inicio no puede ser menor que la fecha actual.");
-                $(this).val("");
             }
-        });
-        $("#fecha_termino").on("change", function () {
-            var selectedDate = new Date($(this).val());
-            var currentDate = new Date();
-            if (selectedDate < currentDate) {
-                alert("La fecha de inicio no puede ser menor que la fecha actual.");
-                $(this).val("");
-            }
-        });
-
     });
+
+    // Open modal and load products
+    $("#AbrirModal").click(function () {
+        $('#myModal').modal('show');
+        table.ajax.reload(); // Reload the DataTable to fetch new data
+    });
+
+    // Close modal
+    $('.modal .btn-close').on('click', function () {
+        $('#myModal').modal('hide');
+    });
+
+    // Assign selected product to the form
+    $(document).on('click', '#btn-select', function () {
+        var id_producto = $(this).data('id');
+        var row = table.row($(this).parents('tr')).data();
+        var nombre_producto = row.nombre_producto;
+        $("#id_producto").val(id_producto);
+        $("#nombre_producto").html(`<option value="${nombre_producto}">${nombre_producto}</option>`);
+        $('#myModal').modal('hide');
+    });
+
+    // Adjust min/max dates
+    $("#fecha_inicio").on("change", function () {
+        $('#fecha_termino input').attr('min', $(this).val());
+    });
+
+    $("#fecha_termino").on("change", function () {
+        $('#fecha_inicio input').attr('max', $(this).val());
+    });
+});
+
 </script>

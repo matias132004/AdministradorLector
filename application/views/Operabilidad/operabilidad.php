@@ -21,7 +21,7 @@
                         <button id="btnSincronizar" class="btn btn-outline-success mb-3">Sincronizar Datos con dat@PDV</button>
                         <button id="btnMostrarModal" class="btn btn-outline-primary mb-3">Ver QR</button>
                         <a href="https://www.remove.bg/es" target="_blank" class="btn btn-outline-primary mb-3">Pagina Web para eliminar fondo de imagenes</a>
-                        <a href="http://192.168.1.190/Lector_Precios/ControladorLogin/index" target="_blank" class="btn btn-outline-primary mb-3">Acceder a Lector de Precios</a>
+                        <a href="http://192.168.1.157/Lector_Precios/ControladorLogin/index" target="_blank" class="btn btn-outline-primary mb-3">Acceder a Lector de Precios</a>
                     </div>
                 </di>
             </div>
@@ -60,7 +60,7 @@
 
     document.getElementById('btnSincronizar').addEventListener('click', function () {
         if (confirm('¿Estás seguro de sincronizar los datos con el PDV y perder algunos cambios realizados en el sistema?')) {
-            window.location.href = "http://192.168.1.190/ApiLector/obtenerFamilias.php";
+            window.location.href = "http://192.168.1.157/ApiLector/obtenerFamilias.php";
         }
     });
 

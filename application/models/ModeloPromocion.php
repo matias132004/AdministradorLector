@@ -90,4 +90,46 @@ INNER JOIN producto pr ON p.id_producto = pr.id_producto
     
         return $querySelect->result_array();
     }
+
+    public function selectProducto2($limit, $offset, $search = '')
+    {
+        $searchQuery = "";
+        if (!empty($search)) {
+            $search = strtoupper($search); // Convertir el término de búsqueda a mayúsculas
+            $searchQuery = "AND (UPPER(p.nombre_producto) LIKE '%$search%' OR UPPER(f.nombre_familia) LIKE '%$search%' OR UPPER(p.cbarra) LIKE '%$search%' OR UPPER(u.nombre_umedida) LIKE '%$search%' OR UPPER(e.nombre_estado) LIKE '%$search%')";
+        }
+    
+        $querySelect = $this->db->query("SELECT p.*, u.nombre_umedida, e.nombre_estado, f.nombre_familia
+            FROM producto p
+            INNER JOIN familia f ON p.id_familia = f.id_familia
+            INNER JOIN umedida u ON p.id_umedida = u.id_umedida
+            INNER JOIN estado e ON p.id_estado = e.id_estado
+            WHERE p.id_estado = 1
+            $searchQuery
+            ORDER BY id_producto
+            LIMIT $limit OFFSET $offset");
+    
+        return $querySelect->result_array();
+    }
+    
+    public function countProductos($search = '')
+    {
+        $searchQuery = "";
+        if (!empty($search)) {
+            $search = strtoupper($search); // Convertir el término de búsqueda a mayúsculas
+            $searchQuery = "AND (UPPER(p.nombre_producto) LIKE '%$search%' OR UPPER(f.nombre_familia) LIKE '%$search%' OR UPPER(p.cbarra) LIKE '%$search%' OR UPPER(u.nombre_umedida) LIKE '%$search%' OR UPPER(e.nombre_estado) LIKE '%$search%')";
+        }
+    
+        $query = $this->db->query("SELECT COUNT(*) as total
+            FROM producto p
+            INNER JOIN familia f ON p.id_familia = f.id_familia
+            INNER JOIN umedida u ON p.id_umedida = u.id_umedida
+            INNER JOIN estado e ON p.id_estado = e.id_estado
+            WHERE p.id_estado = 1
+            $searchQuery");
+    
+        $result = $query->row_array();
+        return $result['total'];
+    }
+    
 }

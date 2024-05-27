@@ -37,17 +37,15 @@ public function GuardarProducto() {
         if ($this->ModeloProducto->comprobarCbarra($cbarra)) {
             // Set alert message
             $alert_message = "No se puede guardar el producto porque el código de barras ya existe.";
+            $data['alert_message'] = $alert_message;
+            $this->load->view('Productos/CrearProducto', $data);
         } else {
             $this->ModeloProducto->insertProducto($nombre_producto, $id_familia, $cbarra, $id_umedida, $total, $id_estado,$PrecioOld,$Descripcion,$descripcionVisible);
-            // Set success message or any other logic after successful insertion
-            $alert_message = "El producto se ha guardado correctamente.";
-        }
 
-        // Pass the alert message to the view
-        $data['alert_message'] = $alert_message;
+            $this->load->view('Productos/MostrarProducto');
+        }
         
-        // Load the view with the alert message
-        $this->load->view('Productos/CrearProducto', $data);
+     
     } else {
         redirect('ControladorLogin'); 
     }
