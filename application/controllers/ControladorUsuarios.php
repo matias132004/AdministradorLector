@@ -173,7 +173,7 @@ class ControladorUsuarios extends CI_Controller
             } else {
                 echo "<script>
                 alert('La contraseña es incorrecta.');
-                window.location.href = '" . base_url('ControladorUmedida/MostrarUmedida') . "';
+                window.location.href = '" .base_url('ControladorUsuarios/mostrarUsuario') . "';
             </script>";
             }
         } else {

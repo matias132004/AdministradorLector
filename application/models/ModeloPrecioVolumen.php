@@ -6,7 +6,9 @@ class ModeloPrecioVolumen extends CI_Model {
         $querySelect = $this->db->query("SELECT precio_volumen.*, producto.nombre_producto AS nombre_producto, producto.total AS total, estado.nombre_estado AS nombre_estado
                                          FROM precio_volumen 
                                          LEFT JOIN producto ON precio_volumen.id_producto = producto.id_producto
-                                         LEFT JOIN estado ON precio_volumen.id_estado = estado.id_estado");
+                                         LEFT JOIN estado ON precio_volumen.id_estado = estado.id_estado
+                                         
+                                         ");
         return $querySelect->result_array();
     }
 
@@ -24,7 +26,7 @@ class ModeloPrecioVolumen extends CI_Model {
     }
 
     public function deshabilitarPrecioVolumen($id_precio_volumen) {
-        $queryUpdate = $this->db->query("UPDATE precio_volumen SET estado = 0 WHERE id_precio_volumen = '$id_precio_volumen'");
+        $queryUpdate = $this->db->query("UPDATE precio_volumen SET id_estado = 2 WHERE id_precio_volumen = '$id_precio_volumen'");
     }
 
     public function selectPrecioVolumenId($id_precio_volumen) {
