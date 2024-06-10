@@ -40,14 +40,15 @@ class ControladorConfiguracionPromocion extends CI_Controller {
             $colorSecundario = $this->input->post('colorSecundario');
             $colorFuentePrincipal = $this->input->post('colorFuentePrincipal');
             $colorFuenteSecundario = $this->input->post('colorFuenteSecundario');
+            $tiempoesperaMs = $this->input->post('tiempoespera');
             $fontFamily = $this->input->post('fontFamily');
             $iddestacado = $this->input->post('destacado');
-
+            $tiempoespera = $tiempoesperaMs * 1000;
             $this->load->model('ModeloConfiguracionPromocion');
             $id_datos_local = $this->ModeloConfiguracionPromocion->selectIdlocal($idUsuario);
             
             // Actualizar los datos en la base de datos
-            $this->ModeloConfiguracionPromocion->updateConfiguracion($id_datos_local,$camponombre, $colorPrincipal, $colorSecundario, $colorFuentePrincipal, $colorFuenteSecundario, $fontFamily,$iddestacado);
+            $this->ModeloConfiguracionPromocion->updateConfiguracion($id_datos_local,$camponombre, $colorPrincipal, $colorSecundario, $colorFuentePrincipal, $colorFuenteSecundario, $fontFamily,$tiempoespera,$iddestacado);
 
             // Redireccionar o mostrar un mensaje de éxito
             redirect('ControladorConfiguracionPromocion/CargarPromocionConfiguracion');

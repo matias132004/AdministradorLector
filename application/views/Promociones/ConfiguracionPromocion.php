@@ -64,7 +64,11 @@
                                     <?php } ?>
                                 </select>
                             </div>
-
+                            <div class="col-6">
+                                <label for="tiempoespera">Timpo en pantalla de promocion:</label>
+                                <br>
+                                <input type="number" id="tiempoespera" name="tiempoespera"  class="form-control" value="<?php echo $fila->tiempoespera/1000; ?>" />
+                            </div>
                         </div>
                         <br>
                         <button type="submit" class="btn btn-outline-primary" id="guardarConfiguracionBtn">Guardar Configuración

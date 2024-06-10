@@ -104,7 +104,13 @@
                                 <li class="nav-item">
                                     <a href="<?php echo base_url() ?>ControladorPromocion/MostrarPromocion" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Mostar Promociones</p>
+                                        <p>Mostar Promociones por Productos</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url() ?>ControladorPromocion/MostrarPromocionPorImagen" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Mostar Promociones por Imagenes</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">

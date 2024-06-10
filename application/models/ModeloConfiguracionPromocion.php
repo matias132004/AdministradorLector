@@ -30,7 +30,7 @@ public function selectConfiguracionPromocion($id_usuario) {
     
     
 
-    public function updateConfiguracion($idlocal,$camponombre, $colorPrincipal, $colorSecundario, $colorFuentePrincipal, $colorFuenteSecundario, $fontFamily,$iddestacado) {
+    public function updateConfiguracion($idlocal,$camponombre, $colorPrincipal, $colorSecundario, $colorFuentePrincipal, $colorFuenteSecundario, $fontFamily,$tiempoespera,$iddestacado) {
         $query = "UPDATE configuracionesPromocion SET 
                   nombre = '$camponombre',
                   colorprincipal = '$colorPrincipal', 
@@ -38,7 +38,8 @@ public function selectConfiguracionPromocion($id_usuario) {
                   colorfuentePrincipal = '$colorFuentePrincipal', 
                   colorfuenteSecundario = '$colorFuenteSecundario', 
                   id_fuente = '$fontFamily',
-                  id_destacado = '$iddestacado'
+                  id_destacado = '$iddestacado',
+                  tiempoespera = '$tiempoespera'
                   WHERE id_datos_local = '$idlocal'";
                   
         $this->db->query($query);
