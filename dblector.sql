@@ -4,7 +4,7 @@
 
 -- Dumped from database version 9.3.25
 -- Dumped by pg_dump version 9.3.25
--- Started on 2024-06-10 09:10:31
+-- Started on 2024-07-01 13:51:48
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -7847,7 +7847,7 @@ SELECT pg_catalog.setval('public.umedida_id_umedida_seq', 14, true);
 --
 
 COPY public.usuario (id_usuario, rut, nombre_usuario, apellido1, apellido2, correo, telefono, id_genero, contrasena, id_estado, id_tipo_usuario, id_datos_local, token) FROM stdin;
-1	77.115.675-4	DATAMAULE	.	.	datamaule@gmail.com	987654321	3	$2y$10$0SkOF0cv1.Z0xQPeeSa93ebZVjLlVyzt6jvthqCKDRcw5LpqzO09W	1	1	1	ca72004c757f766b45ba9e5c51c38949
+1	77.115.675-4	DATAMAULE	.	.	datamaule@gmail.com	987654321	3	$2y$10$0SkOF0cv1.Z0xQPeeSa93ebZVjLlVyzt6jvthqCKDRcw5LpqzO09W	1	1	1	ad54f8ab1f78302e154812f7d1f2af36
 30	21.603.401-5	matias	sepulveda	avila	asd@asd.cl	987654321	1	$2y$10$PPg4UtXbr2vzUg.iiLCb8OzecgaaBnp6DGl6KiNiiejrU1aqLey1y	1	1	1	5d2dd40eb4d95771070ee86810352df7
 \.
 
@@ -8269,7 +8269,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2024-06-10 09:10:31
+-- Completed on 2024-07-01 13:51:49
 
 --
 -- PostgreSQL database dump complete
