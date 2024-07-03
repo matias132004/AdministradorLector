@@ -2,11 +2,12 @@
 
 class ModeloPersonalizacion extends CI_Model {
 
-    public function guardarCambios($id_datos_local, $nombre, $descripcion, $logo) {
+    public function guardarCambios($id_datos_local, $nombre, $descripcion, $logo, $permitirSesion) {
         $data = array(
             'nombre_local' => $nombre,
             'descripcion' => $descripcion,
-            'logo_act' => $logo
+            'logo_act' => $logo,
+            'permitir_sesion' =>  $permitirSesion
         );
 
         $this->db->where('id_datos_local', $id_datos_local);

@@ -22,10 +22,9 @@ class ControladorPersonalizacion extends CI_Controller {
             $data["datosLocal"] = $datosLocal;
             $data["imagen"] = $imagen;
 
-            // Cargar la vista con los datos
             $this->load->view('Personalizacion/ModificarDatos', $data);
         } else {
-            // Si el usuario no está autenticado, redirigir al inicio de sesión
+          
             redirect('ControladorLogin');
         }
     }
@@ -35,9 +34,10 @@ class ControladorPersonalizacion extends CI_Controller {
         $id_datos_local = $this->input->post('id_datos_local');
         $nombre = $this->input->post('nombre');
         $descripcion = $this->input->post('Descripcion');
+        $permitirSesion = $this->input->post('permitirSesion') ? 't' : 'f';
         $logo = $this->input->post('logo_act') == 'on' ? 't' : 'f';
 
-        if ($this->ModeloPersonalizacion->guardarCambios($id_datos_local, $nombre, $descripcion, $logo)) {
+        if ($this->ModeloPersonalizacion->guardarCambios($id_datos_local, $nombre, $descripcion, $logo, $permitirSesion)) {
             redirect('ControladorPersonalizacion/cargarEditarLocal');
         } else {
             $this->load->view('Personalizacion/errorCarga');

@@ -28,6 +28,10 @@
                                 <label for="Descripcion" class="form-label">Descripcion</label>
                                 <input type="text" class="form-control" id="DescripcionLocal" name="Descripcion" required value="<?= $fila['descripcion'] ?>">
                             </div>
+                            <div class="col-6">
+                                <label for="permitirSesion">Permitir Sesion:</label>
+                                <input type="checkbox" name="permitirSesion" <?php echo (isset($configuraciones['permitir_sesion']) && $configuraciones['permitir_sesion'] == 't') ? 'checked' : ''; ?> data-toggle="toggle" data-size="xs">
+                            </div>
                         </div>
                         <input type="hidden" name="id_datos_local" value="<?= $fila['id_datos_local'] ?>">
                         <br>
@@ -105,7 +109,7 @@
 <?php require_once "application/views/footer/Footer.php"; ?>
 
 <script>
-    // Función para cargar la imagen seleccionada en un elemento img
+
     function previewImage(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -118,12 +122,11 @@
         }
     }
 
-    // Evento change del input file para llamar a la función previewImage
+
     $('#imagenes').change(function() {
         previewImage(this);
     });
 
-    // Función para cancelar el cambio y mostrar la imagen actual
     function cancelarCambio() {
         $('#imagenes').val('');
         $('#imagen_actual').attr('src', '<?php echo base_url('uploads/DatosLocal/' . $imagen->nombre); ?>');
